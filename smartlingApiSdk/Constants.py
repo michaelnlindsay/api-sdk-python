@@ -48,5 +48,5 @@ class Uri:
 
 class ReqMethod:
     POST   = "POST"
-    GET    = "POST"
+    GET    = "GET"
     DELETE = "DELETE"
