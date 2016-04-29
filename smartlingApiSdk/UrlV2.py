@@ -26,6 +26,7 @@ class UrlV2:
     GET_ORIGINAL = "/files-api/v2/projects/{projectId}/file"
     LIST_FILES = "/files-api/v2/projects/{projectId}/files/list"
     LIST_FILE_TYPES = "/files-api/v2/projects/{projectId}/file-types"
+    UPLOAD = "/files-api/v2/projects/{projectId}/file"
     
     def __init__(self, projectId, localeId):
         self.projectId = projectId

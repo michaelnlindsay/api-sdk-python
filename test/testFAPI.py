@@ -28,11 +28,11 @@ from smartlingApiSdk.SmartlingFileApi import SmartlingFileApi, ProxySettings, Sm
 from smartlingApiSdk.UploadData import UploadData
 from nose.tools import assert_equal
 
-# don't forget to set real API_KEY and PROJECT_ID
-# or use environment variables:
-# export SL_API_KEY=********-****-****-****-************
-# export SL_PROJECT_ID=*******
-
+noKeymessage = """ don't forget to set real API_KEY and PROJECT_ID
+ or use environment variables:
+ export SL_API_KEY=********-****-****-****-************
+ export SL_PROJECT_ID=*******
+"""
 
 class testFapi(object):
     MY_API_KEY = "YOUR_API_KEY"
@@ -52,6 +52,9 @@ class testFapi(object):
     def setUp(self):
         self.MY_API_KEY = os.environ.get('SL_API_KEY', self.MY_API_KEY)
         self.MY_PROJECT_ID = os.environ.get('SL_PROJECT_ID', self.MY_PROJECT_ID)
+        if self.MY_PROJECT_ID == "YOUR_PROJECT_ID":
+            raise noKeymessage 
+        
         useProxy = False
         if useProxy :
             proxySettings = ProxySettings("login", "password", "proxy_host", "proxy_port or None")

@@ -67,7 +67,6 @@ class FileApiV2:
         self.urlHelper = UrlV2(self.projectId, locale)
 
     def uploadMultipart(self, uri, params):
-        self.addApiKeys(params)
         params[Params.FILE] = open(params[Params.FILE_PATH], 'rb')
         del params[Params.FILE_PATH]  # no need in extra field in POST
 
@@ -99,29 +98,6 @@ class FileApiV2:
         return  ApiResponse(data, code), code
 
     # commands
-
-    def commandUpload(self, uploadData):
-        params = {
-                    Params.FILE_URI: uploadData.uri or uploadData.name,
-                    Params.FILE_TYPE: uploadData.type,
-                    Params.FILE_PATH: uploadData.path + uploadData.name
-                  }
-        if (uploadData.approveContent):
-            params[Params.APPROVED] = uploadData.approveContent
-
-        if (uploadData.callbackUrl):
-            params[Params.CALLBACK_URL] = uploadData.callbackUrl
-
-        if (uploadData.directives):
-            for index, directive in enumerate(uploadData.directives):
-                params[directive.sl_prefix + directive.name] = directive.value
-                
-        if (uploadData.localesToApprove):
-            for index, locale in enumerate(uploadData.localesToApprove):
-                params['{0}[{1}]'.format(Params.LOCALES_TO_APPROVE, index)] = locale
-
-        return self.uploadMultipart(Uri.UPLOAD, params)
-
 
     def commandLastModified(self, fileUri, locale=None, **kw):
         kw[Params.FILE_URI] = fileUri
@@ -233,6 +209,30 @@ class FileApiV2:
         
     def commandListFileTypes(self, **kw):
         return self.command(ReqMethod.GET, self.urlHelper.getUrl(self.urlHelper.LIST_FILE_TYPES), kw)
+
+
+    def commandUpload(self, uploadData):
+        params = {
+                    Params.FILE_URI: uploadData.uri or uploadData.name,
+                    Params.FILE_TYPE: uploadData.type,
+                    Params.FILE_PATH: uploadData.path + uploadData.name
+                  }
+        if (uploadData.approveContent):
+            params[Params.APPROVED] = uploadData.approveContent
+
+        if (uploadData.callbackUrl):
+            params[Params.CALLBACK_URL] = uploadData.callbackUrl
+
+        if (uploadData.directives):
+            for index, directive in enumerate(uploadData.directives):
+                params[directive.sl_prefix + directive.name] = directive.value
+                
+        if (uploadData.localesToApprove):
+            for index, locale in enumerate(uploadData.localesToApprove):
+                params['{0}[{1}]'.format(Params.LOCALES_TO_APPROVE, index)] = locale
+
+        url = self.urlHelper.getUrl(self.urlHelper.UPLOAD)
+        return self.uploadMultipart(url, params)
          
 #Status - All Locales - /files-api/v2/projects/{projectId}/file/status (GET)
 #Status - Single Locale / Extended Response - /files-api/v2/projects/{projectId}/locales/{localeId}/file/status (GET)         

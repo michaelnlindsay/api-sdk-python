@@ -40,7 +40,7 @@ class AuthClient:
         apiResponse = ApiResponse(response_data, status_code)
         
         now = time.time()
-        if try:
+        try:
             self.accessToken = apiResponse.data.accessToken
             self.refreshToken = apiResponse.data.refreshToken
             self.accessExpiresAt = now + apiResponse.data.expiresIn - self.timeJitter

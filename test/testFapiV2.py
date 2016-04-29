@@ -29,10 +29,11 @@ from smartlingApiSdk.UploadData import UploadData
 from smartlingApiSdk.FileApiV2 import FileApiV2
 from nose.tools import assert_equal
 
-# don't forget to set real API_KEY and PROJECT_ID
-# or use environment variables:
-# export SL_API_KEY=********-****-****-****-************
-# export SL_PROJECT_ID=*******
+noKeymessage = """ don't forget to set real API_KEY and PROJECT_ID
+ or use environment variables:
+ export SL_API_KEY=********-****-****-****-************
+ export SL_PROJECT_ID=*******
+"""
 
 
 class testFapiV2(object):
@@ -58,6 +59,8 @@ class testFapiV2(object):
         self.MY_USER_IDENTIFIER = os.environ.get('SL_USER_IDENTIFIER', self.MY_USER_IDENTIFIER )
         self.MY_USER_SECRET  = os.environ.get('SL_USER_SECRET', self.MY_USER_SECRET)
         self.MY_PROJECT_ID = os.environ.get('SL_PROJECT_ID', self.MY_PROJECT_ID)
+        if self.MY_PROJECT_ID == "YOUR_PROJECT_ID":
+            raise noKeymessage 
         
         useProxy = False
         if useProxy :
@@ -67,8 +70,8 @@ class testFapiV2(object):
         self.fapi = FileApiV2('api.smartling.com', self.MY_USER_IDENTIFIER, self.MY_USER_SECRET, self.MY_PROJECT_ID, proxySettings)
         self.locale =  os.environ.get('SL_LOCALE', "ru-RU")
         timestamp = `time.time()`
-        #self.uri = self.FILE_NAME + timestamp 
-        #self.doUpload(self.FILE_NAME, self.uri)
+        self.uri = self.FILE_NAME + timestamp 
+        self.doUpload(self.FILE_NAME, self.uri)
 
         #self.uri16 = self.FILE_NAME_16 + timestamp 
         #self.doUpload(self.FILE_NAME_16, self.uri16)
@@ -83,12 +86,18 @@ class testFapiV2(object):
         uploadData = UploadData(self.FILE_PATH, name, self.FILE_TYPE)
         uploadData.setUri(uri)
         uploadData.setCallbackUrl(self.CALLBACK_URL)
-        return self.fapi.upload(uploadData)
+        return self.fapi.commandUpload(uploadData)
 
     def testFileList(self):
         res, status = self.fapi.commandList()
         assert_equal(True, res.find(self.CODE_SUCCESS_TOKEN) > 0)
     
+
+    def testFileListTypes(self):
+        res, status = self.fapi.commandListFileTypes()
+        assert_equal(True, res.find(self.CODE_SUCCESS_TOKEN) > 0)
+        print res
+
     
     def __testFileStatus(self):
         res, status = self.fapi.status(self.uri, self.locale)
