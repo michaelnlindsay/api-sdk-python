@@ -24,13 +24,14 @@ from Constants import ReqMethod
 from MultipartPostHandler import MultipartPostHandler
 
 class HttpClient:
-     headers = {"Content-Type": "application/x-www-form-urlencoded"}
-     
-     def __init__(self, host, proxySettings=None):
-        self.host = host
-        self.proxySettings = proxySettings
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    protocol = 'https://'
+    
+    def __init__(self, host, proxySettings=None):
+       self.host = host
+       self.proxySettings = proxySettings
 
-     def getHttpResponseAndStatus(self, method, uri, params, handler=None, extraHeaders = {}, requestBody=""):
+    def getHttpResponseAndStatus(self, method, uri, params, handler=None, extraHeaders = {}, requestBody=""):
         if self.proxySettings:
             if self.proxySettings.username:
                 proxy_str = 'http://%s:%s@%s:%s' % (self.proxySettings.username, self.proxySettings.passwd, self.proxySettings.host, self.proxySettings.port)
@@ -47,15 +48,18 @@ class HttpClient:
             urllib2.install_opener(opener)
         
         if not handler:
-            params = urllib.urlencode(params)
+            params = self.encodeParametersAsString(params)
+            
+        headers = {}
+        
+        for k,v in self.headers.items():
+            headers[k] = v
 
-        headers = self.headers
         for k,v in extraHeaders.items():
             headers[k] = v
-            
         
-        url = 'https://' + self.host + uri
-        if method is ReqMethod.GET: url += "?" + params
+        url = self.protocol + self.host + uri
+        if method in (ReqMethod.GET, ReqMethod.DELETE) and params: url += "?" + params
         req = urllib2.Request(url, params, headers=headers)
         req.get_method = lambda: method
 
@@ -72,4 +76,28 @@ class HttpClient:
             status_code = response.code
             
         response_data = response.read()
+        if 200!=status_code:
+            print "Non 200 response:",url, status_code, "response=", response_data
         return response_data, status_code
+        
+        
+    def encodeParametersAsString(self, params):
+        #processes lits parameters separately i.e. {key:[v1, v2]} is encoded as 'key[]=v1&key[]=v2'
+        result = ""
+        for k, v in params.items():
+            if type(v) == type([]) or type(v) == type(()):
+                del params[k]
+                for single in v:
+                    if len(result)>0:
+                        result += "&"
+                    key_list = k+"[]"
+                    dct = {key_list: single} 
+                    result += urllib.urlencode( dct )
+
+        if params:    
+            if len(result)>0:
+                result += "&"
+
+            result +=  urllib.urlencode(params)
+
+        return result

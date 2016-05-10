@@ -34,6 +34,9 @@ class Params:
     FILE_URI_NEW   = 'newFileUri'
     CALLBACK_URL    = 'callbackUrl'
     LOCALES_TO_APPROVE = 'localesToApprove'
+    LOCALE_IDS = 'localeIds'
+    LOCALE_IDS_BRACKET = 'localeIds[]'
+    FILE_URIS   = 'fileUris'
 
 class Uri:
     base = '/v1/file/'
