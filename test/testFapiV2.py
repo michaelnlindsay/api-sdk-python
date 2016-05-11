@@ -32,32 +32,9 @@ from smartlingApiSdk.ProxySettings import ProxySettings
 from smartlingApiSdk.UploadData import UploadData
 from nose.tools import assert_equal
 from smartlingApiSdk.version import version
-
-class CredentialsNotSet(Exception):
-    noKeymessage = """ 
-     don't forget to set real MY_PROJECT_ID, MY_ACCOUNT_UID, MY_USER_IDENTIFIER, MY_USER_SECRET, MY_LOCALE
-     or use environment variables:
-     export SL_PROJECT_ID=*******
-     export SL_ACCOUNT_ID=*******
-     export SL_LOCALE=**-**
-     export SL_USER_IDENTIFIER=******************************
-     export SL_USER_SECRET=*******************************************************
-    """
-
-    def __init__(self, id):
-        self.id = id
-        
-    def __str__(self):
-        return "Missing:" + self.id + self.noKeymessage
+from smartlingApiSdk.SetCredentials import SetCredentials
 
 class testFapiV2(object):
-
-    MY_PROJECT_ID = "CHANGE_ME"
-    MY_ACCOUNT_UID = "CHANGE_ME"
-    MY_USER_IDENTIFIER = "CHANGE_ME"
-    MY_USER_SECRET = "CHANGE_ME"
-    MY_LOCALE="CHANGE_ME"
-
 
     FILE_NAME = "java.properties"
     FILE_NAME_16 = "javaUTF16.properties"
@@ -68,7 +45,6 @@ class testFapiV2(object):
     FILE_NAME_NEW_16 = "javaUTF16.properties.renamed"
     FILE_NAME_CSV = "test.csv"
     
-    
     FILE_NAME_IMPORT_ORIG = "test_import.xml"
     FILE_NAME_IMPORT_TRANSLATED = "test_import_es.xml"
     FILE_TYPE_IMPORT = "android"
@@ -76,17 +52,10 @@ class testFapiV2(object):
     CALLBACK_URL = "http://google.com/?q=hello"
 
     CODE_SUCCESS_TOKEN = 'SUCCESS'
-    
-    def fillInRequisites(self):
-        for id in ("PROJECT_ID", "ACCOUNT_UID", "USER_IDENTIFIER" , "USER_SECRET", "LOCALE"):
-            value = os.environ.get('SL_'+id, "CHANGE_ME")    
-            if "CHANGE_ME" == value:
-                raise CredentialsNotSet(id)
-            setattr(self,"MY_"+id, value)
             
 
     def setUp(self):
-        self.fillInRequisites()
+        SetCredentials(self)
         
         useProxy = False
         if useProxy :

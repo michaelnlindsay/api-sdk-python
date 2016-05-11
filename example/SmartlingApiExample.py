@@ -22,16 +22,25 @@ import sys
 lib_path = os.path.abspath('../')
 sys.path.append(lib_path)  # allow to import ../smartlingApiSdk/SmartlingFileApi
 
-from smartlingApiSdk.SmartlingFileApi import SmartlingFileApiFactory
+from smartlingApiSdk.SmartlingFileApiV2 import SmartlingFileApiFactory
 from smartlingApiSdk.ProxySettings import ProxySettings
 from smartlingApiSdk.SmartlingDirective import SmartlingDirective
 from smartlingApiSdk.UploadData import UploadData
 
 
+
 class SmartlingApiExample:
 
-    MY_API_KEY = "YOUR_API_KEY" #should be changed with read values
-    MY_PROJECT_ID = "YOUR_PROJECT_ID" #should be changed with real values
+
+
+    def fillInRequisites(self):
+        for id in ("PROJECT_ID", "ACCOUNT_UID", "USER_IDENTIFIER" , "USER_SECRET", "LOCALE"):
+            value = os.environ.get('SL_'+id, "CHANGE_ME")    
+            if "CHANGE_ME" == value:
+                raise CredentialsNotSet(id)
+            setattr(self,"MY_"+id, value)
+            
+
 
     def __init__(self, uploadData, locale, new_name):
         self.getCredentials()
@@ -47,13 +56,6 @@ class SmartlingApiExample:
         self.locale = locale
         self.new_name = new_name
         
-    def getCredentials(self):
-        """ get api key and project id from environment variables
-            to set environment variables use command : export SL_API_KEY=******* ; export SL_PROJECT_ID=****** """
-        self.MY_API_KEY = os.environ.get('SL_API_KEY', self.MY_API_KEY)
-        self.MY_PROJECT_ID = os.environ.get('SL_PROJECT_ID', self.MY_PROJECT_ID)
-
-
     def printMarker(self, caption):
         print "--" + caption + "-" * 40
 
