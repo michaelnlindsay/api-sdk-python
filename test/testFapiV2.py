@@ -48,7 +48,7 @@ class CredentialsNotSet(Exception):
         self.id = id
         
     def __str__(self):
-        return "Missing:" + self.id + noKeymessage
+        return "Missing:" + self.id + self.noKeymessage
 
 class testFapiV2(object):
 
