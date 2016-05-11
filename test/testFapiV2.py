@@ -33,17 +33,22 @@ from smartlingApiSdk.SmartlingFileApiV2 import SmartlingFileApiV2
 from nose.tools import assert_equal
 from smartlingApiSdk import __version__ as version
 
-noKeymessage = """ 
- don't forget to set real MY_PROJECT_ID, MY_ACCOUNT_UID, MY_USER_IDENTIFIER, MY_USER_SECRET, MY_LOCALE
- or use environment variables:
- export SL_PROJECT_ID=*******
- export SL_ACCOUNT_ID=*******
- export SL_LOCALE=la-CO
- export SL_USER_IDENTIFIER=******************************
- export SL_USER_SECRET=*******************************************************
- 
-"""
+class CredentialsNotSet(Exception):
+    noKeymessage = """ 
+     don't forget to set real MY_PROJECT_ID, MY_ACCOUNT_UID, MY_USER_IDENTIFIER, MY_USER_SECRET, MY_LOCALE
+     or use environment variables:
+     export SL_PROJECT_ID=*******
+     export SL_ACCOUNT_ID=*******
+     export SL_LOCALE=**-**
+     export SL_USER_IDENTIFIER=******************************
+     export SL_USER_SECRET=*******************************************************
+    """
 
+    def __init__(self, id):
+        self.id = id
+        
+    def __str__(self):
+        return "Missing:" + self.id + noKeymessage
 
 class testFapiV2(object):
 
@@ -76,8 +81,7 @@ class testFapiV2(object):
         for id in ("PROJECT_ID", "ACCOUNT_UID", "USER_IDENTIFIER" , "USER_SECRET", "LOCALE"):
             value = os.environ.get('SL_'+id, "CHANGE_ME")    
             if "CHANGE_ME" == value:
-                missing = "Missing:" + id + noKeymessage
-                raise missing
+                raise CredentialsNotSet(id)
             setattr(self,"MY_"+id, value)
             
 
