@@ -191,6 +191,9 @@ class testFapiV2(object):
         print "testGetAllLocalesCsv", "OK"
 
     def testProjects(self):
+        if self.MY_ACCOUNT_UID == "CHANGE_ME":
+            print "can't test projects api call, export SL_ACCOUNT_UID=*********"
+            return
         res, status = self.fapi.projects(self.MY_ACCOUNT_UID)
         
         assert_equal(200, status)
