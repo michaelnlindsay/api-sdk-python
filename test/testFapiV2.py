@@ -31,7 +31,7 @@ from smartlingApiSdk.SmartlingFileApi import SmartlingFileApi, ProxySettings, Sm
 from smartlingApiSdk.UploadData import UploadData
 from smartlingApiSdk.SmartlingFileApiV2 import SmartlingFileApiV2
 from nose.tools import assert_equal
-from smartlingApiSdk import __version__ as version
+from smartlingApiSdk.version import version
 
 class CredentialsNotSet(Exception):
     noKeymessage = """ 

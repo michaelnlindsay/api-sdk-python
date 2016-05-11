@@ -22,9 +22,10 @@ import sys
 from Constants import ReqMethod
 
 from MultipartPostHandler import MultipartPostHandler
+from version import version
 
 class HttpClient:
-    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    headers = {"Content-Type": "application/x-www-form-urlencoded", "User-Agent":"Python SDK client v"+ version}
     protocol = 'https://'
     
     def __init__(self, host, proxySettings=None):
