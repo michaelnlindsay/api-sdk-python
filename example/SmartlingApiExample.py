@@ -26,24 +26,14 @@ from smartlingApiSdk.SmartlingFileApiV2 import SmartlingFileApiFactory
 from smartlingApiSdk.ProxySettings import ProxySettings
 from smartlingApiSdk.SmartlingDirective import SmartlingDirective
 from smartlingApiSdk.UploadData import UploadData
-
+from smartlingApiSdk.SetCredentials import SetCredentials
 
 
 class SmartlingApiExample:
 
+    def __init__(self, uploadData, new_name):
 
-
-    def fillInRequisites(self):
-        for id in ("PROJECT_ID", "ACCOUNT_UID", "USER_IDENTIFIER" , "USER_SECRET", "LOCALE"):
-            value = os.environ.get('SL_'+id, "CHANGE_ME")    
-            if "CHANGE_ME" == value:
-                raise CredentialsNotSet(id)
-            setattr(self,"MY_"+id, value)
-            
-
-
-    def __init__(self, uploadData, locale, new_name):
-        self.getCredentials()
+        SetCredentials(self) #fill in self attributes MY_PROJECT_ID, MY_ACCOUNT_UID, MY_USER_IDENTIFIER, MY_USER_SECRET, MY_LOCALE
 
         useProxy = False
         if useProxy :
@@ -51,9 +41,9 @@ class SmartlingApiExample:
         else:
             proxySettings = None
 
-        self.fapi = SmartlingFileApiFactory().getSmartlingTranslationApi( self.MY_API_KEY, self.MY_PROJECT_ID, proxySettings)
+        self.fapi = SmartlingFileApiFactory().getSmartlingTranslationApi( self.MY_USER_IDENTIFIER, self.MY_USER_SECRET, self.MY_PROJECT_ID, proxySettings)
         self.uploadData = uploadData
-        self.locale = locale
+        self.locale = self.MY_LOCALE
         self.new_name = new_name
         
     def printMarker(self, caption):
@@ -78,18 +68,16 @@ class SmartlingApiExample:
         self.uploadData.name = name_to_import
 
         #import translations from file
-        resp, code = self.fapi.import_call(self.uploadData, self.locale, translationState="READY_FOR_PUBLISH")
+        resp, code = self.fapi.import_call(self.uploadData, self.locale, translationState="PUBLISHED")
         print resp, code
 
         self.uploadData.name = old_name
 
         #perform `last_modified` command
         self.printMarker("last modified")
-        resp, code = self.fapi.last_modified(self.uploadData.name)
-        print "resp.messages=", resp.messages
+        resp, code = self.fapi.last_modified(self.uploadData.name, self.locale)
         print "resp.code=", resp.code
-        print "resp.data.items="
-        for v in resp.data.items: print v
+        print "resp.data", resp.data
         
         self.printMarker("delete from server goes here")
         #delete test file imported in the beginning of test
@@ -107,7 +95,7 @@ class SmartlingApiExample:
         print resp, code
 
         self.printMarker("file status")
-        resp, code = self.fapi.status(self.uploadData.name, self.locale)
+        resp, code = self.fapi.status(self.uploadData.name)
         print resp, code
 
         self.printMarker("file from server goes here")
@@ -143,7 +131,7 @@ def ascii_test():
     #test simple file
     uploadDataASCII = UploadData(FILE_PATH, FILE_NAME, FILE_TYPE)
     uploadDataASCII.addDirective(SmartlingDirective("placeholder_format_custom", "\[.+?\]"))
-    example = SmartlingApiExample(uploadDataASCII, "it-IT", FILE_NAME_RENAMED)
+    example = SmartlingApiExample(uploadDataASCII, FILE_NAME_RENAMED)
     example.test()
 
 def utf16_test():
@@ -151,14 +139,14 @@ def utf16_test():
     uploadDataUtf16 = UploadData(FILE_PATH, FILE_NAME_UTF16, FILE_TYPE)
     uploadDataUtf16.setApproveContent("true")
     uploadDataUtf16.setCallbackUrl(CALLBACK_URL)
-    example = SmartlingApiExample(uploadDataUtf16, "it-IT", FILE_NAME_RENAMED)
+    example = SmartlingApiExample(uploadDataUtf16,  FILE_NAME_RENAMED)
     example.test()
 
 def import_test():
     #example for import and last_modified commands
     uploadDataImport = UploadData(FILE_PATH, FILE_NAME_IMPORT, FILE_TYPE_IMPORT)
     uploadDataImport.addDirective(SmartlingDirective("placeholder_format_custom", "\[.+?\]"))
-    example = SmartlingApiExample(uploadDataImport, "it-IT", FILE_NAME_RENAMED)
+    example = SmartlingApiExample(uploadDataImport, FILE_NAME_RENAMED)
     example.test_import(FILE_NAME_TO_IMPORT)
 
 ascii_test()

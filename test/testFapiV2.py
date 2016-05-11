@@ -55,7 +55,7 @@ class testFapiV2(object):
             
 
     def setUp(self):
-        SetCredentials(self)
+        SetCredentials(self) #fill in self attributes MY_PROJECT_ID, MY_ACCOUNT_UID, MY_USER_IDENTIFIER, MY_USER_SECRET, MY_LOCALE
         
         useProxy = False
         if useProxy :
