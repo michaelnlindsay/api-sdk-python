@@ -188,6 +188,6 @@ class SmartlingFileApiFactory:
     """ Factory class to build SmartlingFileApi objects """
     api_host = 'api.smartling.com'
 
-    def getSmartlingTranslationApi(self, apiKey, projectId, proxySettings=None):
-        return SmartlingFileApi(self.api_host, apiKey, projectId, proxySettings)
+    def getSmartlingTranslationApi(self, userIdentifier, userSecret, projectId, proxySettings):
+        return SmartlingFileApiV2(self.api_host, userIdentifier, userSecret,  projectId, proxySettings)
 

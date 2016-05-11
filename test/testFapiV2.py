@@ -27,10 +27,9 @@ from datetime import date
 lib_path = os.path.abspath('../')
 sys.path.append(lib_path)  # allow to import ../smartlingApiSdk/SmartlingFileApi
 
-from smartlingApiSdk.SmartlingFileApi import SmartlingFileApi, SmartlingFileApiFactory
+from smartlingApiSdk.SmartlingFileApiV2 import SmartlingFileApiFactory
 from smartlingApiSdk.ProxySettings import ProxySettings
 from smartlingApiSdk.UploadData import UploadData
-from smartlingApiSdk.SmartlingFileApiV2 import SmartlingFileApiV2
 from nose.tools import assert_equal
 from smartlingApiSdk.version import version
 
@@ -94,7 +93,7 @@ class testFapiV2(object):
             proxySettings = ProxySettings("login", "password", "proxy_host", "proxy_port or None")
         else:
             proxySettings = None        
-        self.fapi = SmartlingFileApiV2('api.smartling.com', self.MY_USER_IDENTIFIER, self.MY_USER_SECRET, self.MY_PROJECT_ID, proxySettings)
+        self.fapi = SmartlingFileApiFactory().getSmartlingTranslationApi(self.MY_USER_IDENTIFIER, self.MY_USER_SECRET, self.MY_PROJECT_ID, proxySettings)
         unique_suffix = "_" + version + "_" + `time.time()`
         self.uri = self.FILE_NAME + unique_suffix 
         self.doUpload(self.FILE_NAME, self.uri, self.FILE_TYPE)
