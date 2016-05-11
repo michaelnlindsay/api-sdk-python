@@ -24,7 +24,7 @@ class CredentialsNotSet(Exception):
      in SetCredentials class
      or use environment variables:
      export SL_PROJECT_ID=*******
-     export SL_ACCOUNT_ID=*******
+     export MY_ACCOUNT_UID=*******
      export SL_LOCALE=**-**
      export SL_USER_IDENTIFIER=******************************
      export SL_USER_SECRET=*******************************************************
