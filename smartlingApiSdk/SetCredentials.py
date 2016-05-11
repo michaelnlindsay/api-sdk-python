@@ -20,14 +20,16 @@ import os
 
 class CredentialsNotSet(Exception):
     noKeymessage = """ 
-     don't forget to set real MY_PROJECT_ID, MY_ACCOUNT_UID, MY_USER_IDENTIFIER, MY_USER_SECRET, MY_LOCALE
+     don't forget to set real MY_PROJECT_ID, MY_USER_IDENTIFIER, MY_USER_SECRET, MY_LOCALE
      in SetCredentials class
      or use environment variables:
      export SL_PROJECT_ID=*******
-     export MY_ACCOUNT_UID=*******
      export SL_LOCALE=**-**
      export SL_USER_IDENTIFIER=******************************
      export SL_USER_SECRET=*******************************************************
+     
+     #optional
+     export SL_ACCOUNT_UID=******* #(required only to list projects api call)
     """
 
     def __init__(self, id):
@@ -46,11 +48,12 @@ class SetCredentials:
     MY_LOCALE="CHANGE_ME"
     
     creds = ("PROJECT_ID", "ACCOUNT_UID", "USER_IDENTIFIER" , "USER_SECRET", "LOCALE")
+    optional_creds = ("ACCOUNT_UID")
    
     def __init__(self, instance):
         for id in self.creds:
             cred = "MY_"+id
             value = os.environ.get('SL_'+id, getattr(self, cred))    
-            if "CHANGE_ME" == value:
+            if "CHANGE_ME" == value and not id in optional_creds:
                 raise CredentialsNotSet(id)
             setattr(instance, cred, value)
