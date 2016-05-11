@@ -27,7 +27,8 @@ from datetime import date
 lib_path = os.path.abspath('../')
 sys.path.append(lib_path)  # allow to import ../smartlingApiSdk/SmartlingFileApi
 
-from smartlingApiSdk.SmartlingFileApi import SmartlingFileApi, ProxySettings, SmartlingFileApiFactory
+from smartlingApiSdk.SmartlingFileApi import SmartlingFileApi, SmartlingFileApiFactory
+from smartlingApiSdk.ProxySettings import ProxySettings
 from smartlingApiSdk.UploadData import UploadData
 from smartlingApiSdk.SmartlingFileApiV2 import SmartlingFileApiV2
 from nose.tools import assert_equal

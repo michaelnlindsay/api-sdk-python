@@ -21,7 +21,6 @@
 
 from FileApiV2 import FileApiV2
 
-
 class SmartlingFileApiV2(FileApiV2):
     """ Wrapper class providing access to all file API commands, all methods below represent API commands.
         Each command returns tuple = (response, status_code) 
@@ -192,11 +191,3 @@ class SmartlingFileApiFactory:
     def getSmartlingTranslationApi(self, apiKey, projectId, proxySettings=None):
         return SmartlingFileApi(self.api_host, apiKey, projectId, proxySettings)
 
-
-class ProxySettings:
-    """ settings for http proxy to be used to pass api requests, !!! Only basic authentication is supported for restricted proxy access !!! """
-    def __init__(self, username, passwd, host, port):
-        self.username = username
-        self.passwd = passwd
-        self.host = host
-        self.port = port
