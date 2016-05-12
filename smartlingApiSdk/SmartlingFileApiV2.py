@@ -33,7 +33,7 @@ class SmartlingFileApiV2(FileApiV2):
         
         Response also can be a string to provide backward compatibility with previous versions
         in case you need json response as a string use :
-        api = SmartlingFileApi(host, apiKey, projectId)
+        api = SmartlingFileApi(userIdentifier, userSecret, projectId)
         api.response_as_string = True
         
         Some of methods may be called with optional parameters
@@ -43,9 +43,9 @@ class SmartlingFileApiV2(FileApiV2):
         list with additional parameters:
              api.list(limit=100, offset=50)
         """
-
-    def __init__(self, host, userIdentifier, userSecret, projectId, proxySettings=None):
-        FileApiV2.__init__(self, host, userIdentifier, userSecret, projectId, proxySettings)
+        
+    def __init__(self, userIdentifier, userSecret, projectId, proxySettings=None):
+        FileApiV2.__init__(self, userIdentifier, userSecret, projectId, proxySettings)
 
 
     def projects(self, accountUid):
@@ -181,13 +181,3 @@ class SmartlingFileApiV2(FileApiV2):
             returns (response, status_code) tuple
             for http://docs.smartling.com/pages/API/v2/FileAPI/Get-Translations/ """
         return self.commandGetTranslations(uploadData, localeId, **kw)
-
-    
-
-class SmartlingFileApiFactory:
-    """ Factory class to build SmartlingFileApi objects """
-    api_host = 'api.smartling.com'
-
-    def getSmartlingTranslationApi(self, userIdentifier, userSecret, projectId, proxySettings):
-        return SmartlingFileApiV2(self.api_host, userIdentifier, userSecret,  projectId, proxySettings)
-

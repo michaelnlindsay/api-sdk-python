@@ -35,7 +35,6 @@ class AuthClient:
         
     def request(self, uri, body):
         header = {"Content-Type": "application/json"}
-        print body
         response_data, status_code = self.httpClient.getHttpResponseAndStatus(ReqMethod.POST, uri, params={}, extraHeaders=header, requestBody=body)
         apiResponse = ApiResponse(response_data, status_code)
         

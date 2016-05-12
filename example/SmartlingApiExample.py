@@ -22,18 +22,22 @@ import sys
 lib_path = os.path.abspath('../')
 sys.path.append(lib_path)  # allow to import ../smartlingApiSdk/SmartlingFileApi
 
-from smartlingApiSdk.SmartlingFileApiV2 import SmartlingFileApiFactory
+from smartlingApiSdk.SmartlingFileApiV2 import SmartlingFileApiV2
 from smartlingApiSdk.ProxySettings import ProxySettings
 from smartlingApiSdk.SmartlingDirective import SmartlingDirective
 from smartlingApiSdk.UploadData import UploadData
-from smartlingApiSdk.SetCredentials import SetCredentials
+from smartlingApiSdk.Credentials import Credentials
 
 
 class SmartlingApiExample:
 
     def __init__(self, uploadData, new_name):
+        credentials = Credentials() #Gets your Smartling credetnials from environment variables
 
-        SetCredentials(self) #fill in self attributes MY_PROJECT_ID, MY_ACCOUNT_UID, MY_USER_IDENTIFIER, MY_USER_SECRET, MY_LOCALE
+        self.MY_USER_IDENTIFIER = credentials.MY_USER_IDENTIFIER
+        self.MY_USER_SECRET = credentials.MY_USER_SECRET
+        self.MY_PROJECT_ID = credentials.MY_PROJECT_ID
+        self.MY_LOCALE = credentials.MY_LOCALE
 
         useProxy = False
         if useProxy :
@@ -41,9 +45,8 @@ class SmartlingApiExample:
         else:
             proxySettings = None
 
-        self.fapi = SmartlingFileApiFactory().getSmartlingTranslationApi( self.MY_USER_IDENTIFIER, self.MY_USER_SECRET, self.MY_PROJECT_ID, proxySettings)
+        self.fapi = SmartlingFileApiV2( self.MY_USER_IDENTIFIER, self.MY_USER_SECRET, self.MY_PROJECT_ID, proxySettings)
         self.uploadData = uploadData
-        self.locale = self.MY_LOCALE
         self.new_name = new_name
         
     def printMarker(self, caption):
@@ -68,14 +71,14 @@ class SmartlingApiExample:
         self.uploadData.name = name_to_import
 
         #import translations from file
-        resp, code = self.fapi.import_call(self.uploadData, self.locale, translationState="PUBLISHED")
+        resp, code = self.fapi.import_call(self.uploadData, self.MY_LOCALE, translationState="PUBLISHED")
         print resp, code
 
         self.uploadData.name = old_name
 
         #perform `last_modified` command
         self.printMarker("last modified")
-        resp, code = self.fapi.last_modified(self.uploadData.name, self.locale)
+        resp, code = self.fapi.last_modified(self.uploadData.name, self.MY_LOCALE)
         print "resp.code=", resp.code
         print "resp.data", resp.data
         
@@ -99,7 +102,7 @@ class SmartlingApiExample:
         print resp, code
 
         self.printMarker("file from server goes here")
-        resp, code = self.fapi.get(self.uploadData.name, self.locale)
+        resp, code = self.fapi.get(self.uploadData.name, self.MY_LOCALE)
         print resp, code
 
         self.printMarker("renaming file")

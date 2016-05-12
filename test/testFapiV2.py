@@ -27,12 +27,12 @@ from datetime import date
 lib_path = os.path.abspath('../')
 sys.path.append(lib_path)  # allow to import ../smartlingApiSdk/SmartlingFileApi
 
-from smartlingApiSdk.SmartlingFileApiV2 import SmartlingFileApiFactory
+from smartlingApiSdk.SmartlingFileApiV2 import SmartlingFileApiV2
 from smartlingApiSdk.ProxySettings import ProxySettings
 from smartlingApiSdk.UploadData import UploadData
 from nose.tools import assert_equal
 from smartlingApiSdk.version import version
-from smartlingApiSdk.SetCredentials import SetCredentials
+from smartlingApiSdk.Credentials import Credentials
 
 class testFapiV2(object):
 
@@ -55,14 +55,21 @@ class testFapiV2(object):
             
 
     def setUp(self):
-        SetCredentials(self) #fill in self attributes MY_PROJECT_ID, MY_ACCOUNT_UID, MY_USER_IDENTIFIER, MY_USER_SECRET, MY_LOCALE
+        credentials = Credentials() #Gets your Smartling credetnials from environment variables
+        self.MY_USER_IDENTIFIER = credentials.MY_USER_IDENTIFIER
+        self.MY_USER_SECRET = credentials.MY_USER_SECRET
+        self.MY_PROJECT_ID = credentials.MY_PROJECT_ID
+        self.MY_LOCALE = credentials.MY_LOCALE
         
+        #needed for testProjects
+        self.MY_ACCOUNT_UID = credentials.MY_ACCOUNT_UID
+    
         useProxy = False
         if useProxy :
             proxySettings = ProxySettings("login", "password", "proxy_host", "proxy_port or None")
         else:
             proxySettings = None        
-        self.fapi = SmartlingFileApiFactory().getSmartlingTranslationApi(self.MY_USER_IDENTIFIER, self.MY_USER_SECRET, self.MY_PROJECT_ID, proxySettings)
+        self.fapi = SmartlingFileApiV2(self.MY_USER_IDENTIFIER, self.MY_USER_SECRET, self.MY_PROJECT_ID, proxySettings)
         unique_suffix = "_" + version + "_" + `time.time()`
         self.uri = self.FILE_NAME + unique_suffix 
         self.doUpload(self.FILE_NAME, self.uri, self.FILE_TYPE)
@@ -192,7 +199,7 @@ class testFapiV2(object):
 
     def testProjects(self):
         if self.MY_ACCOUNT_UID == "CHANGE_ME":
-            print "can't test projects api call, export SL_ACCOUNT_UID=*********"
+            print "can't test projects api call, set self.MY_ACCOUNT_UID or export SL_ACCOUNT_UID=*********"
             return
         res, status = self.fapi.projects(self.MY_ACCOUNT_UID)
         

@@ -23,13 +23,13 @@ class CredentialsNotSet(Exception):
      don't forget to set real MY_PROJECT_ID, MY_USER_IDENTIFIER, MY_USER_SECRET, MY_LOCALE
      in SetCredentials class
      or use environment variables:
-     export SL_PROJECT_ID=*******
      export SL_LOCALE=**-**
      export SL_USER_IDENTIFIER=******************************
      export SL_USER_SECRET=*******************************************************
      
      #optional
-     export SL_ACCOUNT_UID=******* #(required only to list projects api call)
+     export SL_ACCOUNT_UID=******* #required only to list projects api call
+     export SL_PROJECT_ID=******* #required for api calls `projects` and `project_details`
     """
 
     def __init__(self, id):
@@ -39,7 +39,7 @@ class CredentialsNotSet(Exception):
         return "Missing:" + self.id + self.noKeymessage
 
 
-class SetCredentials:
+class Credentials:
 
     MY_PROJECT_ID = "CHANGE_ME"
     MY_ACCOUNT_UID = "CHANGE_ME"
@@ -47,13 +47,13 @@ class SetCredentials:
     MY_USER_SECRET = "CHANGE_ME"
     MY_LOCALE="CHANGE_ME"
     
-    creds = ("PROJECT_ID", "ACCOUNT_UID", "USER_IDENTIFIER" , "USER_SECRET", "LOCALE")
+    creds = ("PROJECT_ID", "ACCOUNT_UID", "USER_IDENTIFIER", "USER_SECRET", "LOCALE")
     optional_creds = ("ACCOUNT_UID")
    
-    def __init__(self, instance):
+    def __init__(self):
         for id in self.creds:
             cred = "MY_"+id
             value = os.environ.get('SL_'+id, getattr(self, cred))    
             if "CHANGE_ME" == value and not id in self.optional_creds:
                 raise CredentialsNotSet(id)
-            setattr(instance, cred, value)
+            setattr(self, cred, value)

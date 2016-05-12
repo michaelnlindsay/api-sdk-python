@@ -51,15 +51,15 @@ Get Translations - /files-api/v2/projects/{projectId}/locales/{localeId}/file/ge
 
 class FileApiV2:
     """ basic class implementing low-level api calls """
+    host = 'api.smartling.com'
     response_as_string = False
 
-    def __init__(self, host, userIdentifier, userSecret, projectId, proxySettings=None):
-        self.host = host
+    def __init__(self, userIdentifier, userSecret, projectId, proxySettings=None):
         self.userIdentifier = userIdentifier
         self.userSecret = userSecret
         self.projectId = projectId
         self.proxySettings = proxySettings
-        self.httpClient = HttpClient(host, proxySettings)
+        self.httpClient = HttpClient(self.host, proxySettings)
         self.authClient = AuthClient(userIdentifier, userSecret, proxySettings)
         self.urlHelper = UrlV2Helper(self.projectId)
 
