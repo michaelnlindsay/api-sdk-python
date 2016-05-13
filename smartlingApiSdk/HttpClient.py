@@ -52,8 +52,8 @@ class HttpClient:
             params = self.encodeParametersAsString(params)
         else:
             prarms = self.encodeListParams(params)
-        headers = {}
         
+        headers = {}
         for k,v in self.headers.items():
             headers[k] = v
 
