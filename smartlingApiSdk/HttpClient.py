@@ -50,7 +50,8 @@ class HttpClient:
         
         if not handler:
             params = self.encodeParametersAsString(params)
-            
+        else:
+            prarms = self.encodeListParams(params)
         headers = {}
         
         for k,v in self.headers.items():
@@ -80,8 +81,7 @@ class HttpClient:
         if 200!=status_code:
             print "Non 200 response:",url, status_code, "response=", response_data
         return response_data, status_code
-        
-        
+
     def encodeParametersAsString(self, params):
         #processes lits parameters separately i.e. {key:[v1, v2]} is encoded as 'key[]=v1&key[]=v2'
         result = ""
@@ -102,3 +102,9 @@ class HttpClient:
             result +=  urllib.urlencode(params)
 
         return result
+
+    def encodeListParams(self, params):
+         for k, v in params.items():
+            if type(v) == type([]) or type(v) == type(()):
+                del params[k]
+                params[k + '[]'] = ",".join(v)

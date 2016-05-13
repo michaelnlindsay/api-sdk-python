@@ -26,7 +26,6 @@ from ApiResponse import ApiResponse
 from AuthClient import AuthClient
 from UrlV2Helper import UrlV2Helper
 
-
 """
 Upload File - /files-api/v2/projects/{projectId}/file (POST)
 Download Original File - /files-api/v2/projects/{projectId}/file (GET)
@@ -171,25 +170,27 @@ class FileApiV2:
         return self.command(ReqMethod.GET, self.urlHelper.getUrl(self.urlHelper.LIST_FILE_TYPES), kw)
 
 
-    def commandUpload(self, uploadData):
+    def commandUpload(self, filePath, fileType, **kw):
         """ http://docs.smartling.com/pages/API/v2/FileAPI/Upload-File/ """
         params = {
-                    Params.FILE_URI: uploadData.uri or uploadData.name,
-                    Params.FILE_TYPE: uploadData.type,
-                    Params.FILE_PATH: uploadData.path + uploadData.name
-                  }
+                Params.FILE_URI: filePath,
+                Params.FILE_TYPE: fileType,
+                Params.FILE_PATH: filePath
+            }
 
-        if (uploadData.callbackUrl):
-            params[Params.CALLBACK_URL] = uploadData.callbackUrl
+        for k,v in kw.items():
+            params[k] = v
 
-        if (uploadData.directives):
-            for index, directive in enumerate(uploadData.directives):
-                params[directive.sl_prefix + directive.name] = directive.value
-                
-        if (uploadData.localesToApprove):
-            for index, locale in enumerate(uploadData.localesToApprove):
-                params['{0}[{1}]'.format(Params.LOCALES_TO_APPROVE, index)] = locale
-
+        if params.has_key("SmartlingDirectives"):
+            directives = kw["SmartlingDirectives"]
+            del params["SmartlingDirectives"]
+            if type(directives) != type([]) and type(directives) != type(()):
+                directives = [directives]
+            for directive in directives:
+               params[directive.sl_prefix + directive.name] = directive.value
+        
+        #import pdb; pdb.set_trace()
+        
         url = self.urlHelper.getUrl(self.urlHelper.UPLOAD)
         return self.uploadMultipart(url, params)
         
@@ -247,14 +248,18 @@ class FileApiV2:
         url = self.urlHelper.getUrl(self.urlHelper.LAST_MODIFIED_ALL)
         return self.command(ReqMethod.GET, url, kw) 
 
-    def commandImport(self, uploadData, localeId, **kw):
-        kw[Params.FILE_URI]  = uploadData.uri
-        kw[Params.FILE_TYPE] = uploadData.type
-        kw[Params.FILE_PATH] = uploadData.path + uploadData.name
-        kw["file"] = uploadData.path + uploadData.name + ";type=text/plain"
+    def commandImport(self, filePathOriginal, filePathTranslated, fileType, localeId, **kw):
+        params = {}
+        params[Params.FILE_URI]  = filePathOriginal
+        params[Params.FILE_TYPE] = fileType
+        params[Params.FILE_PATH] = filePathTranslated
+        params["file"] = filePathTranslated + ";type=text/plain"
 
+        for k,v in kw.items():
+            params[k] = v
+        
         url = self.urlHelper.getUrl(self.urlHelper.IMPORT, localeId = localeId)
-        return self.uploadMultipart(url, kw)
+        return self.uploadMultipart(url, params)
 
     def commandListAuthorizedLocales(self, fileUri):
         """ http://docs.smartling.com/pages/API/v2/FileAPI/Authorize-Content/List-Authorized-Locales/ """
@@ -279,11 +284,11 @@ class FileApiV2:
         url = self.urlHelper.getUrl(self.urlHelper.UNAUTHORIZE)
         return self.command(ReqMethod.DELETE, url, kw)
         
-    def commandGetTranslations(self, uploadData, localeId, **kw):
+    def commandGetTranslations(self, fileUri, filePath, localeId, **kw):
         """  http://docs.smartling.com/pages/API/v2/FileAPI/Get-Translations/ """
-        kw[Params.FILE_URI]  = uploadData.uri
-        kw[Params.FILE_PATH] = uploadData.path + uploadData.name
-        kw["file"] = uploadData.path + uploadData.name + ";type=text/plain"
+        kw[Params.FILE_URI]  = fileUri
+        kw[Params.FILE_PATH] = filePath
+        kw["file"] = filePath + ";type=text/plain"
 
         url = self.urlHelper.getUrl(self.urlHelper.GET_TRANSLATIONS, localeId = localeId)
         return self.uploadMultipart(url, kw, response_as_string=True)       

@@ -29,10 +29,11 @@ sys.path.append(lib_path)  # allow to import ../smartlingApiSdk/SmartlingFileApi
 
 from smartlingApiSdk.SmartlingFileApiV2 import SmartlingFileApiV2
 from smartlingApiSdk.ProxySettings import ProxySettings
-from smartlingApiSdk.UploadData import UploadData
 from nose.tools import assert_equal
 from smartlingApiSdk.version import version
 from smartlingApiSdk.Credentials import Credentials
+
+from smartlingApiSdk.UploadData import UploadData
 
 class testFapiV2(object):
 
@@ -98,11 +99,9 @@ class testFapiV2(object):
 
     def doUpload(self, name, uri, type):
         #ensure file is uploaded which is necessary for all tests
-        uploadData = UploadData(self.FILE_PATH, name, type)
-        uploadData.setUri(uri)
-        uploadData.setCallbackUrl(self.CALLBACK_URL)
-        print "uploading", uri
-        res, status = self.fapi.upload(uploadData)
+        uniqueUriForUploadTestFile = uri
+        localeIdsToAuthorize = [self.MY_LOCALE]
+        res, status = self.fapi.upload(self.FILE_PATH + name, type, fileUri = uniqueUriForUploadTestFile, localeIdsToAuthorize = localeIdsToAuthorize )
         
         assert_equal(200, status)
         assert_equal(self.CODE_SUCCESS_TOKEN, res.code)
@@ -285,18 +284,18 @@ class testFapiV2(object):
         print "testLastModifiedAll", "OK"        
         
     def testImport(self):
-        uploadData = UploadData(self.FILE_PATH, self.FILE_NAME_IMPORT_ORIG, self.FILE_TYPE_IMPORT)
-        uploadData.setCallbackUrl(self.CALLBACK_URL)
-        uploadData.setUri(self.uri_import)
-        res, status = self.fapi.upload(uploadData)
+        res, status = self.fapi.upload(self.FILE_PATH + self.FILE_NAME_IMPORT_ORIG, self.FILE_TYPE_IMPORT , fileUri=self.uri_import)
 
         assert_equal(200, status)
         assert_equal(self.CODE_SUCCESS_TOKEN, res.code)
+        
+        originalPath = self.FILE_PATH + self.FILE_NAME_IMPORT_ORIG
+        translatedPath = self.FILE_PATH + self.FILE_NAME_IMPORT_TRANSLATED
     
-        uploadData = UploadData(self.FILE_PATH, self.FILE_NAME_IMPORT_ORIG, self.FILE_TYPE_IMPORT)
-        uploadData.uri = self.uri_import
-        uploadData.name = self.FILE_NAME_IMPORT_TRANSLATED
-        resp, status = self.fapi.import_call(uploadData, self.MY_LOCALE, translationState="PUBLISHED")
+        resp, status = self.fapi.import_call(originalPath, translatedPath, 
+            self.FILE_TYPE_IMPORT, self.MY_LOCALE, 
+            fileUri=self.uri_import, translationState="PUBLISHED")
+            
         assert_equal(resp.code, self.CODE_SUCCESS_TOKEN)
         assert_equal(resp.data.wordCount, 2)
         assert_equal(resp.data.stringCount, 2)
@@ -316,7 +315,6 @@ class testFapiV2(object):
 
         locales = map(lambda x:x['localeId'], resp.data.items)
         assert_equal(True, self.MY_LOCALE in locales)
-
         print "testListAuthorizedLocales", "OK" 
     
     
@@ -336,11 +334,7 @@ class testFapiV2(object):
         
 
     def testGetTranslations(self):        
-        uploadData = UploadData(self.FILE_PATH, self.FILE_NAME, self.FILE_TYPE)
-        uploadData.setCallbackUrl(self.CALLBACK_URL)
-        uploadData.setUri(self.uri)
-
-        res, status = self.fapi.get_translations(uploadData, (self.MY_LOCALE))
+        res, status = self.fapi.get_translations(self.uri, self.FILE_PATH+self.FILE_NAME, (self.MY_LOCALE))
         
         assert_equal(200, status)
         

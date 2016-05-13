@@ -67,11 +67,11 @@ class SmartlingFileApiV2(FileApiV2):
 
 
 
-    def upload(self, uploadData):
+    def upload(self, filePath, fileType, **kw):
         """ Uploads original source content to Smartling
             returns (response, status_code) tuple
             for details on `upload` command see http://docs.smartling.com/pages/API/v2/FileAPI/Upload-File/ """
-        return self.commandUpload(uploadData)
+        return self.commandUpload(filePath, fileType, **kw)
 
     def get(self, fileUri, locale, **kw):
         """ implements `get` api command
@@ -151,11 +151,11 @@ class SmartlingFileApiV2(FileApiV2):
             for details see http://docs.smartling.com/pages/API/v2/FileAPI/Last-Modified/All-Locales/ """
         return self.commandLastModifiedAll(fileUri, **kw)    
         
-    def import_call(self, uploadData, localeId, **kw):
+    def import_call(self, filePathOriginal, filePathTranslated, fileType, localeId, **kw):
         """ Import Translations.
             returns (response, status_code) tuple
             for details see http://docs.smartling.com/pages/API/v2/FileAPI/Import-Translations/ """
-        return self.commandImport(uploadData, localeId, **kw)
+        return self.commandImport(filePathOriginal, filePathTranslated, fileType, localeId, **kw)
         
 
     def list_authorized_locales(self, fileUri):
@@ -176,8 +176,8 @@ class SmartlingFileApiV2(FileApiV2):
             for details see http://docs.smartling.com/pages/API/v2/FileAPI/Authorize-Content/Unauthorize/ / """
         return self.commandUnauthorize(fileUri, localeIds)
         
-    def get_translations(self, uploadData, localeId, **kw):
+    def get_translations(self, fileUri, filePath, localeId, **kw):
         """ Temporarily uploads a file, then returns a translated version for requested locales.
             returns (response, status_code) tuple
             for http://docs.smartling.com/pages/API/v2/FileAPI/Get-Translations/ """
-        return self.commandGetTranslations(uploadData, localeId, **kw)
+        return self.commandGetTranslations(fileUri, filePath, localeId, **kw)

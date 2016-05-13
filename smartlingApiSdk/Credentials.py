@@ -53,7 +53,8 @@ class Credentials:
     def __init__(self):
         for id in self.creds:
             cred = "MY_"+id
-            value = os.environ.get('SL_'+id, getattr(self, cred))    
+            if "CHANGE_ME" == getattr(self, cred, "CHANGE_ME"):
+                value = os.environ.get('SL_'+id, getattr(self, cred))    
             if "CHANGE_ME" == value and not id in self.optional_creds:
                 raise CredentialsNotSet(id)
             setattr(self, cred, value)
