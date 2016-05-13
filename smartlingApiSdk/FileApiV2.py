@@ -189,8 +189,6 @@ class FileApiV2:
             for directive in directives:
                params[directive.sl_prefix + directive.name] = directive.value
         
-        #import pdb; pdb.set_trace()
-        
         url = self.urlHelper.getUrl(self.urlHelper.UPLOAD)
         return self.uploadMultipart(url, params)
         
