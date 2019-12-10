@@ -18,7 +18,7 @@
 '''
 
 class UrlV2Helper:
-    
+
     GET = "/files-api/v2/projects/{projectId}/locales/{localeId}/file"
     GET_MULTIPLE_LOCALES = "/files-api/v2/projects/{projectId}/files/zip"
     GET_ALL_LOCALES_ZIP = "/files-api/v2/projects/{projectId}/locales/all/file/zip"
@@ -30,6 +30,15 @@ class UrlV2Helper:
     DELETE = "/files-api/v2/projects/{projectId}/file/delete"
     PROJECT_DETAILS = "/projects-api/v2/projects/{projectId}"
     PROJECTS = "/accounts-api/v2/accounts/{accountUid}/projects"
+    JOB_LIST = "/jobs-api/v3/projects/{projectId}/jobs"
+    JOB_CREATE = "/jobs-api/v3/projects/{projectId}/jobs"
+    JOB_AUTHORIZE = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/authorize"
+    JOB_DETAILS = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}"
+    JOB_LIST_FILES = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/files"
+    JOB_PROGRESS = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/progress"
+    JOB_CLOSE = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/close"
+    JOB_CANCEL = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/cancel"
+    JOB_ADD_FILE = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/file/add"
     STATUS_ALL = "/files-api/v2/projects/{projectId}/file/status"
     STATUS_LOCALE = "/files-api/v2/projects/{projectId}/locales/{localeId}/file/status"
     RENAME = "/files-api/v2/projects/{projectId}/file/rename"
@@ -40,31 +49,34 @@ class UrlV2Helper:
     AUTHORIZE = "/files-api/v2/projects/{projectId}/file/authorized-locales"
     UNAUTHORIZE = "/files-api/v2/projects/{projectId}/file/authorized-locales"
     GET_TRANSLATIONS = "/files-api/v2/projects/{projectId}/locales/{localeId}/file/get-translations"
-    
+
     def __init__(self, projectId):
         self.projectId = projectId
 
-    def getUrl(self, urlWithPlaceholders, localeId="", accountUid="", projectId=""):
-        
+    def getUrl(self, urlWithPlaceholders, localeId="", accountUid="", projectId="", jobGuid=""):
+
         url = urlWithPlaceholders
         if self.projectId:
             url = url.replace("{projectId}", self.projectId)
         elif projectId:
             url = url.replace("{projectId}", projectId)
 
-        if localeId : 
+        if localeId :
             url = url.replace("{localeId}", localeId)
-        
-        if accountUid : 
+
+        if accountUid :
             url = url.replace("{accountUid}", accountUid)
-        
+
+        if jobGuid :
+            url = url.replace("{translationJobUid}", jobGuid)
+
         if "{localeId}" in url:
             raise "Unhandled localeId placeholder:" + url
-            
+
         if "{accountUid}" in url:
             raise "Unhandled accountUid placeholder:" + url
-            
+
         if "{projectId}" in url:
             raise "Unhandled projectId placeholder:" + url
-            
+
         return url

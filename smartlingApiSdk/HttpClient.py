@@ -33,7 +33,6 @@ else:
 
 from .Constants import ReqMethod
 
-from .MultipartPostHandler import MultipartPostHandler
 from .version import version
 
 class HttpClient:
@@ -57,7 +56,7 @@ class HttpClient:
                 urllib2.ProxyHandler({"https": proxy_str}))
             urllib2.install_opener(opener)
         elif handler:
-            opener = urllib2.build_opener(MultipartPostHandler)
+            opener = urllib2.build_opener(handler)
             urllib2.install_opener(opener)
 
 
@@ -65,7 +64,7 @@ class HttpClient:
         if not handler:
             params = self.encodeParametersAsString(params)
         else:
-            prarms = self.encodeListParams(params)
+            params = handler.encode_list_params(handler, params)
 
         headers = {}
         for k,v in list(self.headers.items()):
@@ -90,8 +89,7 @@ class HttpClient:
                 response = urllib2.urlopen(req, requestBody, context=context)
             else:
                 if handler:
-                    multipartHandler = MultipartPostHandler();
-                    req = multipartHandler.http_request(req)
+                    req = handler.http_request(handler, req)
                 else :
                     req.data = req.data.encode()
                 response = urllib2.urlopen(req, context=context)

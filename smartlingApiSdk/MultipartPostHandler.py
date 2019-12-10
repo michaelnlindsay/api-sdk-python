@@ -88,6 +88,13 @@ class MultipartPostHandler(urllib2.BaseHandler):
                 request.add_data(data)
         return request
 
+    def encode_list_params(self, params):
+        for k, v in list(params.items()):
+            if type(v) == bool: params[k] = str(v).lower()
+            if type(v) == type([]) or type(v) == type(()):
+                del params[k]
+                params[k + '[]'] = ",".join(v)
+
     def multipart_encode(self, vars, files, boundary=None, buffer=None):
         if boundary is None:
             if isPython3:

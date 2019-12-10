@@ -17,10 +17,7 @@
  * limitations under the License.
 '''
 
-#FileApi class implementation
-
 from .HttpClient import HttpClient
-from .MultipartPostHandler import MultipartPostHandler
 from .Constants import Params, ReqMethod
 from .ApiResponse import ApiResponse
 from .AuthClient import AuthClient
@@ -49,31 +46,21 @@ Authorize - /files-api/v2/projects/{projectId}/file/authorized-locales (PUT / PO
 Unauthorize - /files-api/v2/projects/{projectId}/file/authorized-locales (DELETE)
 Get Translations - /files-api/v2/projects/{projectId}/locales/{localeId}/file/get-translations (POST)
 """
+from .JsonPostHandler import JsonPostHandler
 
-class ApiV2:
+class ApiV3:
     """ basic class implementing low-level api calls """
     host = 'api.smartling.com'
     response_as_string = False
     clientUid = "{\"client\":\"smartling-api-sdk-python\",\"version\":\"%s\"}" % version
 
-    def __init__(self, userIdentifier, userSecret, proxySettings=None):
+    def __init__(self, userIdentifier, userSecret, proxySettings=None, contentType="application/json"):
         self.userIdentifier = userIdentifier
         self.userSecret = userSecret
         self.proxySettings = proxySettings
-        self.httpClient = HttpClient(self.host, proxySettings)
-        self.authClient = AuthClient(userIdentifier, userSecret, proxySettings)
+        self.httpClient = HttpClient(self.host, proxySettings, contentType)
+        self.authClient = AuthClient(userIdentifier, userSecret, proxySettings, contentType)
 
-    def uploadMultipart(self, uri, params, response_as_string=False):
-        if Params.FILE_PATH in params:
-            params[Params.FILE] = open(params[Params.FILE_PATH], 'rb')
-            del params[Params.FILE_PATH]  # no need in extra field in POST
-
-        authHeader = self.getAuthHeader()
-        response_data, status_code = self.getHttpResponseAndStatus(ReqMethod.POST ,uri, params, MultipartPostHandler, extraHeaders = authHeader)
-        response_data = response_data.strip()
-        if self.response_as_string or response_as_string:
-            return response_data, status_code
-        return ApiResponse(response_data, status_code), status_code
 
     def getHttpResponseAndStatus(self, method, uri, params, handler=None, extraHeaders = None):
         return self.httpClient.getHttpResponseAndStatus(method, uri, params, handler, extraHeaders = extraHeaders)
@@ -85,12 +72,12 @@ class ApiV2:
 
         return {"Authorization" : "Bearer "+ token}
 
-    def command_raw(self, method, uri, params, handler=None):
+    def command_raw(self, method, uri, params):
         authHeader = self.getAuthHeader()
-        return self.getHttpResponseAndStatus(method, uri, params, handler, extraHeaders = authHeader)
+        return self.getHttpResponseAndStatus(method, uri, params, JsonPostHandler, extraHeaders = authHeader)
 
-    def command(self, method, uri, params, handler=None):
-        data, code = self.command_raw(method, uri, params, handler)
+    def command(self, method, uri, params):
+        data, code = self.command_raw(method, uri, params)
         if self.response_as_string:
             return data, code
         return  ApiResponse(data, code), code

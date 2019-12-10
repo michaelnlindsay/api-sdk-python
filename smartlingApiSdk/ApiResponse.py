@@ -33,6 +33,9 @@ class Data:
     def __str__(self):
         return repr(self.dict)
 
+    def to_json(self):
+        return json.dumps(self.dict)
+
 class ApiResponse:
     """ response object to store parsed json response as python object, it also behaves like string for backward
         compatibility with previous SDK versions where response was a string """

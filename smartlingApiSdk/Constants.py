@@ -29,6 +29,16 @@ class Params:
     FILE_TYPE  = 'fileType'
     LOCALE     = 'locale'
     FILE       = 'file'
+
+    JOB_NAME   = 'jobName'
+    JOB_DESCRIPTION = 'description'
+    JOB_TARGET_LOCALES = 'targetLocaleIds'
+    JOB_DUE_DATE = 'dueDate'
+    JOB_REFERENCE_NUMBER = 'referenceNumber'
+    JOB_CALLBACK_URL = 'callbackUrl'
+    JOB_CALLBACK_METHOD = 'callbackMethod'
+    JOB_CUSTOM_FIELDS = 'customFields'
+
     APPROVED   = 'approved'
     RETRIEVAL_TYPE = 'retrievalType'
     FILE_URI_NEW   = 'newFileUri'
