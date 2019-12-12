@@ -17,9 +17,10 @@
  * limitations under the License.
 '''
 
-#JobsApiV3 class implementation
+# JobsApiV3 class implementation
 
 from .JobsApiV3 import JobsApiV3
+
 
 class SmartlingJobsApiV3(JobsApiV3):
     """ Wrapper class providing access to jobs API commands, all methods below represent API commands.
@@ -55,13 +56,15 @@ class SmartlingJobsApiV3(JobsApiV3):
         """
         return self.commandJobList(projectId)
 
-    def create(self, projectId, jobName, description):
+    def create(self, projectId, jobName, description, ref_num=None, callback_uri=None, callback_method=None,
+               custom_fields=None):
         """
         Returns basic details on a specific Smartling project.
         returns (response, status_code) tuple
         for details see http://docs.smartling.com/pages/API/v2/Projects/Project-Details/
         """
-        return self.commandJobCreate(projectId, jobName, description)
+        return self.commandJobCreate(projectId, jobName, description, ref_num, callback_uri, callback_method,
+                                     custom_fields)
 
     def details(self, projectId, jobGuid):
         """
@@ -128,6 +131,4 @@ class SmartlingJobsApiV3(JobsApiV3):
         return self.commandJobClose(projectId, jobGuid)
 
     def add_file(self, projectId, jobGuid, fileUri):
-
         return self.commandJobAddFile(projectId, jobGuid, fileUri)
-

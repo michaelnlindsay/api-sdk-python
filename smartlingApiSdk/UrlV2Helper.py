@@ -38,6 +38,7 @@ class UrlV2Helper:
     JOB_PROGRESS = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/progress"
     JOB_CLOSE = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/close"
     JOB_CANCEL = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/cancel"
+    JOB_DELETE = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}"
     JOB_ADD_FILE = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/file/add"
     STATUS_ALL = "/files-api/v2/projects/{projectId}/file/status"
     STATUS_LOCALE = "/files-api/v2/projects/{projectId}/locales/{localeId}/file/status"

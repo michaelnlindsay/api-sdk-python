@@ -32,9 +32,9 @@ class Data:
 
     def __str__(self):
         return repr(self.dict)
-
-    def to_json(self):
-        return json.dumps(self.dict)
+#TODO: remove in favor of ApiResponse.get_response_dict()
+    def get_dict(self):
+        return self.dict
 
 class ApiResponse:
     """ response object to store parsed json response as python object, it also behaves like string for backward
@@ -66,3 +66,6 @@ class ApiResponse:
 
     def __str__(self):
         return str(self.response_string)
+
+    def get_response_dict(self):
+        return self.response_dict

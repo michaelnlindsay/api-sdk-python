@@ -28,8 +28,8 @@ class AuthClient:
     refreshUri = "/auth-api/v2/authenticate/refresh"
     timeJitter = 5 #seconds off server expires time
 
-    def __init__(self, userIdentifier, userSecret, proxySettings=None):
-        self.httpClient = HttpClient(self.host, proxySettings)
+    def __init__(self, userIdentifier, userSecret, proxySettings=None, contentType="application/x-www-form-urlencoded"):
+        self.httpClient = HttpClient(self.host, proxySettings, contentType=contentType)
         self.userIdentifier = userIdentifier
         self.userSecret = userSecret
         self.accessExpiresAt = 0

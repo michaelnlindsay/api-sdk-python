@@ -17,7 +17,10 @@
  * limitations under the License.
 '''
 
+#FileApi class implementation
+
 from .HttpClient import HttpClient
+from .MultipartPostHandler import MultipartPostHandler
 from .Constants import Params, ReqMethod
 from .ApiResponse import ApiResponse
 from .AuthClient import AuthClient

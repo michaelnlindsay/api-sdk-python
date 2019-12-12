@@ -33,14 +33,17 @@ else:
 
 from .Constants import ReqMethod
 
+from .MultipartPostHandler import MultipartPostHandler
+from .JsonPostHandler import JsonPostHandler
 from .version import version
 
 class HttpClient:
-    headers = {"Content-Type": "application/x-www-form-urlencoded", "User-Agent":"Python SDK client v"+ version}
+    headers = {"User-Agent":"Python SDK client v"+ version}
     protocol = 'https://'
 
-    def __init__(self, host, proxySettings=None):
+    def __init__(self, host, proxySettings=None, contentType="application/x-www-form-urlencoded"):
        self.host = host
+       self.headers.update({"Content-Type" : contentType})
        self.proxySettings = proxySettings
 
     def getHttpResponseAndStatus(self, method, uri, params, handler=None, extraHeaders = {}, requestBody=""):

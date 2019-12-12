@@ -36,11 +36,19 @@ class JobsApiV3(ApiV3):
         url = self.urlHelper.getUrl(self.urlHelper.JOB_LIST, projectId=projectId)
         return self.command(ReqMethod.GET, url, kw)
 
-    def commandJobCreate(self, projectId, name, description): #
+    def commandJobCreate(self, projectId, name, description, ref_num = None, callback_uri = None, callback_method = None, custom_fields = None): #
         """ https://api-reference.smartling.com/#operation/addJob """
         kw = {}
         kw[Params.JOB_NAME] = name
         kw[Params.JOB_DESCRIPTION] = description
+        if ref_num:
+            kw[Params.JOB_REFERENCE_NUMBER] = ref_num
+        if callback_uri:
+            kw[Params.JOB_CALLBACK_URL] = callback_uri
+        if callback_method:
+            kw[Params.JOB_CALLBACK_METHOD] = callback_method
+        if custom_fields:
+            kw[Params.JOB_CUSTOM_FIELDS] = custom_fields
         url = self.urlHelper.getUrl(self.urlHelper.JOB_CREATE, projectId=projectId)
         return self.command(ReqMethod.POST, url, kw)
 
@@ -53,7 +61,7 @@ class JobsApiV3(ApiV3):
     def commandJobDelete(self, projectId, jobGuid):
         """ https://api-reference.smartling.com/#operation/deleteJob """
         kw = {}
-        url = self.urlHelper.getUrl(self.urlHelper.JOB_CREATE, projectId=projectId, jobGuid=jobGuid)
+        url = self.urlHelper.getUrl(self.urlHelper.JOB_DELETE, projectId=projectId, jobGuid=jobGuid)
         return self.command(ReqMethod.DELETE, url, kw)
 
     def commandJobCancel(self, projectId, jobGuid):
@@ -90,7 +98,7 @@ class JobsApiV3(ApiV3):
         """ https://api-reference.smartling.com/#operation/addFileToJob """
         kw = {}
         kw[Params.FILE_URI] = fileUri
-        kw[Params.JOB_TARGET_LOCALES] = {}
+        kw[Params.JOB_TARGET_LOCALES] = Params.SUPPORTED_LOCALES
         url = self.urlHelper.getUrl(self.urlHelper.JOB_ADD_FILE, projectId=projectId, jobGuid=jobGuid)
         return self.command(ReqMethod.POST, url, kw)
 
