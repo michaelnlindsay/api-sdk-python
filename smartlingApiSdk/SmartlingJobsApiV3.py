@@ -56,14 +56,14 @@ class SmartlingJobsApiV3(JobsApiV3):
         """
         return self.commandJobList(projectId)
 
-    def create(self, projectId, jobName, description, ref_num=None, callback_uri=None, callback_method=None,
+    def create(self, projectId, jobName, description, reference_number=None, callback_uri=None, callback_method=None,
                custom_fields=None):
         """
         Returns basic details on a specific Smartling project.
         returns (response, status_code) tuple
         for details see http://docs.smartling.com/pages/API/v2/Projects/Project-Details/
         """
-        return self.commandJobCreate(projectId, jobName, description, ref_num, callback_uri, callback_method,
+        return self.commandJobCreate(projectId, jobName, description, reference_number, callback_uri, callback_method,
                                      custom_fields)
 
     def details(self, projectId, jobGuid):
@@ -131,4 +131,15 @@ class SmartlingJobsApiV3(JobsApiV3):
         return self.commandJobClose(projectId, jobGuid)
 
     def add_file(self, projectId, jobGuid, fileUri):
+        """
+        Adds a file to a job
+        :param projectId:
+        :param jobGuid:
+        :param fileUri:
+        :return:
+        """
         return self.commandJobAddFile(projectId, jobGuid, fileUri)
+
+    def create_custom_fields(self, account_id, custom_fields):
+
+        return self.commandCreateCustomFields(account_id, custom_fields)

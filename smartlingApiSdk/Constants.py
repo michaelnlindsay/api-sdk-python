@@ -48,9 +48,6 @@ class Params:
     LOCALE_IDS_BRACKET = 'localeIds[]'
     FILE_URIS   = 'fileUris'
 
-    # todo: get locale list from project details
-    SUPPORTED_LOCALES = ["zh-CN","zh-TW","da-DK","nl-NL","en-GB","fr-FR","de-DE","id-ID","it-IT","ja-JP","ko-KR","ms-MY","nb-NO","pl-PL","pt-BR","ru-RU","es-LA","es-ES","sv-SE","th-TH","uk-UA"]
-
 class Uri:
     base = '/v1/file/'
     UPLOAD = base + 'upload'

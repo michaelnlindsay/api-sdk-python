@@ -26,6 +26,10 @@ from .ApiV3 import ApiV3
 class JobsApiV3(ApiV3):
     """ basic class implementing Jobs api calls """
 
+
+    # todo: get locale list from project details
+    SUPPORTED_LOCALES = ["zh-CN","zh-TW","da-DK","nl-NL","en-GB","fr-FR","de-DE","id-ID","it-IT","ja-JP","ko-KR","ms-MY","nb-NO","pl-PL","pt-BR","ru-RU","es-LA","es-ES","sv-SE","th-TH","uk-UA"]
+
     def __init__(self, userIdentifier, userSecret, proxySettings=None):
         ApiV3.__init__(self, userIdentifier, userSecret, proxySettings)
         self.urlHelper = UrlV2Helper(None)
@@ -36,13 +40,13 @@ class JobsApiV3(ApiV3):
         url = self.urlHelper.getUrl(self.urlHelper.JOB_LIST, projectId=projectId)
         return self.command(ReqMethod.GET, url, kw)
 
-    def commandJobCreate(self, projectId, name, description, ref_num = None, callback_uri = None, callback_method = None, custom_fields = None): #
+    def commandJobCreate(self, projectId, name, description, reference_number = None, callback_uri = None, callback_method = None, custom_fields = None): #
         """ https://api-reference.smartling.com/#operation/addJob """
         kw = {}
         kw[Params.JOB_NAME] = name
         kw[Params.JOB_DESCRIPTION] = description
-        if ref_num:
-            kw[Params.JOB_REFERENCE_NUMBER] = ref_num
+        if reference_number:
+            kw[Params.JOB_REFERENCE_NUMBER] = reference_number
         if callback_uri:
             kw[Params.JOB_CALLBACK_URL] = callback_uri
         if callback_method:
@@ -98,7 +102,39 @@ class JobsApiV3(ApiV3):
         """ https://api-reference.smartling.com/#operation/addFileToJob """
         kw = {}
         kw[Params.FILE_URI] = fileUri
-        kw[Params.JOB_TARGET_LOCALES] = Params.SUPPORTED_LOCALES
+        kw[Params.JOB_TARGET_LOCALES] = self.SUPPORTED_LOCALES
         url = self.urlHelper.getUrl(self.urlHelper.JOB_ADD_FILE, projectId=projectId, jobGuid=jobGuid)
         return self.command(ReqMethod.POST, url, kw)
+
+    def commandCreateCustomFields(self, accountUid, custom_fields):
+        """ https://api-reference.smartling.com/#operation/createCustomField """
+        data = []
+        for field_name in custom_fields:
+            field = {
+                "type": "SHORT_TEXT",
+                "fieldName": field_name,
+                "required": "false"
+            }
+            data.append(field)
+
+        url = self.urlHelper.getUrl(self.urlHelper.JOB_CREATE_FIELD, accountUid=accountUid)
+        return self.command(ReqMethod.POST, url, data)
+
+
+
+"""
+"data": {
+"type": "SHORT_TEXT | LONG_TEXT | SELECTBOX | CHECKBOX",
+"fieldName": "field-name",
+"enabled": true,
+"required": true,
+"searchable": true,
+"displayToTranslators": true,
+"options": [],
+"defaultValue": "default field value",
+"description": "Custom field example"
+}
+
+"""
+
 
