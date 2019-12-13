@@ -40,7 +40,7 @@ class UrlV2Helper:
     JOB_CANCEL = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/cancel"
     JOB_DELETE = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}"
     JOB_ADD_FILE = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/file/add"
-    JOB_CREATE_FIELD = "/jobs-api/v3/accounts/{accountUid}/custom-fields"
+    ACCOUNT_FIELDS = "/jobs-api/v3/accounts/{accountUid}/custom-fields"
     STATUS_ALL = "/files-api/v2/projects/{projectId}/file/status"
     STATUS_LOCALE = "/files-api/v2/projects/{projectId}/locales/{localeId}/file/status"
     RENAME = "/files-api/v2/projects/{projectId}/file/rename"

@@ -117,9 +117,13 @@ class JobsApiV3(ApiV3):
             }
             data.append(field)
 
-        url = self.urlHelper.getUrl(self.urlHelper.JOB_CREATE_FIELD, accountUid=accountUid)
+        url = self.urlHelper.getUrl(self.urlHelper.ACCOUNT_FIELDS, accountUid=accountUid)
         return self.command(ReqMethod.POST, url, data)
 
+    def commandListCustomFields(self, accountUid):
+        """ https://api-reference.smartling.com/#operation/getAccountCustomFields """
+        url = self.urlHelper.getUrl(self.urlHelper.ACCOUNT_FIELDS, accountUid=accountUid)
+        return self.command(ReqMethod.POST, url, {})
 
 
 """
