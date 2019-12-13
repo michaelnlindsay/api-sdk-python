@@ -106,39 +106,33 @@ class JobsApiV3(ApiV3):
         url = self.urlHelper.getUrl(self.urlHelper.JOB_ADD_FILE, projectId=projectId, jobGuid=jobGuid)
         return self.command(ReqMethod.POST, url, kw)
 
-    def commandCreateCustomFields(self, accountUid, custom_fields):
+    def commandCreateCustomFields(self, accountUid, field_name, description):
         """ https://api-reference.smartling.com/#operation/createCustomField """
-        data = []
-        for field_name in custom_fields:
-            field = {
+        payload = {
+            "data": {
                 "type": "SHORT_TEXT",
                 "fieldName": field_name,
-                "required": "false"
+                "enabled": "true",
+                "required": "false",
+                "searchable": "true",
+                "displayToTranslators": "true",
+                # "options": [
+                #     [
+                #         "option1",
+                #         "option2"
+                #     ]
+                # ],
+                # "defaultValue": "default field value",
+                "description": description
             }
-            data.append(field)
+        }
 
         url = self.urlHelper.getUrl(self.urlHelper.ACCOUNT_FIELDS, accountUid=accountUid)
-        return self.command(ReqMethod.POST, url, data)
+        return self.command(ReqMethod.POST, url, payload)
 
     def commandListCustomFields(self, accountUid):
         """ https://api-reference.smartling.com/#operation/getAccountCustomFields """
         url = self.urlHelper.getUrl(self.urlHelper.ACCOUNT_FIELDS, accountUid=accountUid)
         return self.command(ReqMethod.GET, url, {})
-
-
-"""
-"data": {
-"type": "SHORT_TEXT | LONG_TEXT | SELECTBOX | CHECKBOX",
-"fieldName": "field-name",
-"enabled": true,
-"required": true,
-"searchable": true,
-"displayToTranslators": true,
-"options": [],
-"defaultValue": "default field value",
-"description": "Custom field example"
-}
-
-"""
 
 
