@@ -123,7 +123,7 @@ class JobsApiV3(ApiV3):
     def commandListCustomFields(self, accountUid):
         """ https://api-reference.smartling.com/#operation/getAccountCustomFields """
         url = self.urlHelper.getUrl(self.urlHelper.ACCOUNT_FIELDS, accountUid=accountUid)
-        return self.command(ReqMethod.POST, url, {})
+        return self.command(ReqMethod.GET, url, {})
 
 
 """
