@@ -109,22 +109,20 @@ class JobsApiV3(ApiV3):
     def commandCreateCustomFields(self, accountUid, field_name, description):
         """ https://api-reference.smartling.com/#operation/createCustomField """
         payload = {
-            "data": {
-                "type": "SHORT_TEXT",
-                "fieldName": field_name,
-                "enabled": "true",
-                "required": "false",
-                "searchable": "true",
-                "displayToTranslators": "true",
-                # "options": [
-                #     [
-                #         "option1",
-                #         "option2"
-                #     ]
-                # ],
-                # "defaultValue": "default field value",
-                "description": description
-            }
+            "type": "SHORT_TEXT",
+            "fieldName": field_name,
+            "enabled": "true",
+            "required": "false",
+            "searchable": "true",
+            "displayToTranslators": "true",
+            # "options": [
+            #     [
+            #         "option1",
+            #         "option2"
+            #     ]
+            # ],
+            # "defaultValue": "default field value",
+            "description": description
         }
 
         url = self.urlHelper.getUrl(self.urlHelper.ACCOUNT_FIELDS, accountUid=accountUid)
