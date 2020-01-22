@@ -54,6 +54,8 @@ class JobsApiV3(ApiV3):
         if custom_fields:
             kw[Params.JOB_CUSTOM_FIELDS] = custom_fields
         url = self.urlHelper.getUrl(self.urlHelper.JOB_CREATE, projectId=projectId)
+        print("add job request: ", url)
+        print("add job payload: ", kw)
         return self.command(ReqMethod.POST, url, kw)
 
     def commandJobDetails(self, projectId, jobGuid):
