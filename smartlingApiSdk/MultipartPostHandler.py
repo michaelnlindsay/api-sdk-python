@@ -94,6 +94,7 @@ class MultipartPostHandler(urllib2.BaseHandler):
             if type(v) == type([]) or type(v) == type(()):
                 del params[k]
                 params[k + '[]'] = ",".join(v)
+        return params
 
     def multipart_encode(self, vars, files, boundary=None, buffer=None):
         if boundary is None:
