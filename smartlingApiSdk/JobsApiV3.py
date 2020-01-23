@@ -140,7 +140,7 @@ class JobsApiV3(ApiV3):
         url = self.urlHelper.getUrl(self.urlHelper.PROJECT_ADD_FIELDS, projectId=projectId)
         return self.command(ReqMethod.POST, url, [{"fieldUid": fieldUid}])
 
-    def commandListCustomProjectFields(self, projectId):
+    def commandListProjectCustomFields(self, projectId):
         """ https://api-reference.smartling.com/#operation/getProjectCustomFields """
         url = self.urlHelper.getUrl(self.urlHelper.PROJECT_FIELDS, projectId=projectId)
         return self.command(ReqMethod.GET, url, {})

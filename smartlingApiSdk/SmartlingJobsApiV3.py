@@ -173,4 +173,4 @@ class SmartlingJobsApiV3(JobsApiV3):
         :param projectId:
         :return:
         """
-        return self.command(projectId)
+        return self.commandListProjectCustomFields(projectId)
