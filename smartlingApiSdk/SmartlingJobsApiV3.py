@@ -158,14 +158,14 @@ class SmartlingJobsApiV3(JobsApiV3):
         """
         return self.commandListAccountCustomFields(account_id)
 
-    def add_project_custom_field(self, projectId, fieldUid):
+    def add_project_custom_field(self, projectId, fieldUids):
         """
         Adds custom field to project for use in jobs
         :param projectId
-        :param fieldUid
+        :param fieldUid (string seperated list of field ids)
         :return:
         """
-        return self.commandAddCustomFieldToProject(projectId, fieldUid)
+        return self.commandAddCustomFieldToProject(projectId, fieldUids)
 
     def list_project_custom_fields(self, projectId):
         """
