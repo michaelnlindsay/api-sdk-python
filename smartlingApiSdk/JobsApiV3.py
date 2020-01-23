@@ -130,7 +130,7 @@ class JobsApiV3(ApiV3):
         url = self.urlHelper.getUrl(self.urlHelper.ACCOUNT_FIELDS, accountUid=accountUid)
         return self.command(ReqMethod.POST, url, payload)
 
-    def commandListCustomFields(self, accountUid):
+    def commandListCustomAccountFields(self, accountUid):
         """ https://api-reference.smartling.com/#operation/getAccountCustomFields """
         url = self.urlHelper.getUrl(self.urlHelper.ACCOUNT_FIELDS, accountUid=accountUid)
         return self.command(ReqMethod.GET, url, {})
@@ -139,4 +139,9 @@ class JobsApiV3(ApiV3):
         """ https://api-reference.smartling.com/#operation/assignCustomFieldsToProject """
         url = self.urlHelper.getUrl(self.urlHelper.PROJECT_ADD_FIELDS, projectId=projectId)
         return self.command(ReqMethod.POST, url, [{"fieldUid": fieldUid}])
+
+    def commandListCustomProjectFields(self, projectId):
+        """ https://api-reference.smartling.com/#operation/getProjectCustomFields """
+        url = self.urlHelper.getUrl(self.urlHelper.PROJECT_FIELDS, projectId=projectId)
+        return self.command(ReqMethod.GET, url, {})
 
