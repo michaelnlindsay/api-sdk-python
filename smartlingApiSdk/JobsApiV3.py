@@ -45,6 +45,7 @@ class JobsApiV3(ApiV3):
         kw = {}
         kw[Params.JOB_NAME] = name
         kw[Params.JOB_DESCRIPTION] = description
+        kw[Params.JOB_TARGET_LOCALES] = self.SUPPORTED_LOCALES
         if reference_number:
             kw[Params.JOB_REFERENCE_NUMBER] = reference_number
         if callback_uri:
