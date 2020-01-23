@@ -106,6 +106,9 @@ class FileApiV2(ApiV2):
         self.processDirectives(params, directives)
 
         url = self.urlHelper.getUrl(self.urlHelper.UPLOAD)
+
+        print("upload file endpoint: ", url)
+        print("upload file payload: ", params)
         return self.uploadMultipart(url, params)
 
     def commandDelete(self, fileUri, **kw):
