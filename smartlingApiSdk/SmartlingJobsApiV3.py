@@ -48,13 +48,13 @@ class SmartlingJobsApiV3(JobsApiV3):
     def __init__(self, userIdentifier, userSecret, proxySettings=None):
         JobsApiV3.__init__(self, userIdentifier, userSecret, proxySettings)
 
-    def list(self, projectId):
+    def list(self, projectId, filterStatus=None):
         """
         Returns a list of all jobs in a project
         returns (response, status_code) tuple
         Detail at https://api-reference.smartling.com/#operation/getJobsByProject
         """
-        return self.commandJobList(projectId)
+        return self.commandJobList(projectId, filterStatus)
 
     def create(self, projectId, jobName, description, reference_number=None, callback_uri=None, callback_method=None,
                custom_fields=None):
