@@ -42,9 +42,9 @@ class HttpClient:
     protocol = 'https://'
 
     def __init__(self, host, proxySettings=None, contentType="application/x-www-form-urlencoded"):
-       self.host = host
-       self.headers.update({"Content-Type" : contentType})
-       self.proxySettings = proxySettings
+        self.host = host
+        self.headers.update({"Content-Type" : contentType})
+        self.proxySettings = proxySettings
 
     def getHttpResponseAndStatus(self, method, uri, params, handler=None, extraHeaders = {}, requestBody=""):
         if self.proxySettings:
@@ -131,7 +131,7 @@ class HttpClient:
         return result
 
     def encodeListParams(self, params):
-         for k, v in list(params.items()):
+        for k, v in list(params.items()):
             if type(v) == bool: params[k] = str(v).lower()
             if type(v) == type([]) or type(v) == type(()):
                 del params[k]

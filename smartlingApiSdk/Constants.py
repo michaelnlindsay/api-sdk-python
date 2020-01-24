@@ -38,6 +38,7 @@ class Params:
     JOB_CALLBACK_URL = 'callbackUrl'
     JOB_CALLBACK_METHOD = 'callbackMethod'
     JOB_CUSTOM_FIELDS = 'customFields'
+    JOB_TRANSLATION_STATUS = 'translationJobStatus'
 
     APPROVED   = 'approved'
     RETRIEVAL_TYPE = 'retrievalType'
