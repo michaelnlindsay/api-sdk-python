@@ -51,7 +51,7 @@ class SmartlingFileApiV2(FileApiV2):
         """ Uploads original source content to Smartling
             returns (response, status_code) tuple
             for details on `upload` command see http://docs.smartling.com/pages/API/v2/FileAPI/Upload-File/ """
-        return self.commandUpload(filePath, fileType, fileUri, **kw)
+        return self.commandUpload(filePath, fileType, fileUri=fileUri, **kw)
 
     def get(self, fileUri, locale, **kw):
         """ implements `get` api command
