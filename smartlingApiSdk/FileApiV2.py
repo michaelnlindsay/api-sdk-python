@@ -91,10 +91,14 @@ class FileApiV2(ApiV2):
         """ http://docs.smartling.com/pages/API/v2/FileAPI/List-File-Types/ """
         return self.command(ReqMethod.GET, self.urlHelper.getUrl(self.urlHelper.LIST_FILE_TYPES), kw)
 
-    def commandUpload(self, filePath, fileType, directives={}, **kw):
+    def commandUpload(self, filePath, fileType, directives={}, fileUri=None, **kw):
         """ http://docs.smartling.com/pages/API/v2/FileAPI/Upload-File/ """
+
+        if fileUri == None:
+            fileUri = filePath
+
         params = {
-                Params.FILE_URI: filePath,
+                Params.FILE_URI: fileUri,
                 Params.FILE_TYPE: fileType,
                 Params.FILE_PATH: filePath
             }
