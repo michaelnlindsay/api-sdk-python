@@ -42,7 +42,7 @@ class UrlV2Helper:
     JOB_ADD_FILE = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/file/add"
     ACCOUNT_FIELDS = "/jobs-api/v3/accounts/{accountUid}/custom-fields"
     PROJECT_FIELDS = "/jobs-api/v3/projects/{projectId}/custom-fields"
-    PROCESS_STATUS = "https://api.smartling.com/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/processes/{processUid}"
+    PROCESS_STATUS = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/processes/{processUid}"
     PROJECT_ADD_FIELDS = "/jobs-api/v3/projects/{projectId}/custom-fields"
     STATUS_ALL = "/files-api/v2/projects/{projectId}/file/status"
     STATUS_LOCALE = "/files-api/v2/projects/{projectId}/locales/{localeId}/file/status"
