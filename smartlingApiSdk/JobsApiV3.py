@@ -161,3 +161,4 @@ class JobsApiV3(ApiV3):
     def commandCheckAsyncProcess(self, projectId, jobUid, processUid):
         """ https://api-reference.smartling.com/#operation/getJobAsyncProcessStatus """
         url = self.urlHelper.getUrl(self.urlHelper.PROCESS_STATUS, projectId=projectId, jobUid=jobUid, processUid=processUid)
+        return self.command(ReqMethod.GET, url, {})
