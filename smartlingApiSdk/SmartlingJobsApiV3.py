@@ -66,79 +66,79 @@ class SmartlingJobsApiV3(JobsApiV3):
         return self.commandJobCreate(projectId, jobName, description, reference_number, callback_uri, callback_method,
                                      custom_fields)
 
-    def details(self, projectId, jobGuid):
+    def details(self, projectId, jobUid):
         """
         Get details of a job
         :param projectId:
-        :param jobGuid:
+        :param jobUid:
         :return:
         """
-        return self.commandJobDetails(projectId, jobGuid)
+        return self.commandJobDetails(projectId, jobUid)
 
-    def delete(self, projectId, jobGuid):
+    def delete(self, projectId, jobUid):
         """
         Deletes a smartling job
         :param projectId:
-        :param jobGuid:
+        :param jobUid:
         :return: delete jobs response
         """
-        return self.commandJobDelete(projectId, jobGuid)
+        return self.commandJobDelete(projectId, jobUid)
 
-    def cancel(self, projectId, jobGuid):
+    def cancel(self, projectId, jobUid):
         """
         Cancels an uncompleted job
         :param projectId:
-        :param jobGuid:
+        :param jobUid:
         :return:
         """
-        return self.commandJobCancel(projectId, jobGuid)
+        return self.commandJobCancel(projectId, jobUid)
 
-    def authorize(self, projectId, jobGuid):
+    def authorize(self, projectId, jobUid):
         """
         Authorize a smartling job.
         This tells translators to start translating all untranslated strings from files associated with jobs
         :param projectId:
-        :param jobGuid:
+        :param jobUid:
         :return:
         """
-        return self.commandJobAuthorize(projectId, jobGuid)
+        return self.commandJobAuthorize(projectId, jobUid)
 
-    def list_files(self, projectId, jobGuid):
+    def list_files(self, projectId, jobUid):
         """
         List files attached to job
         :param projectId:
-        :param jobGuid:
+        :param jobUid:
         :return:
         """
-        return self.commandJobListFiles(projectId, jobGuid)
+        return self.commandJobListFiles(projectId, jobUid)
 
-    def progress(self, projectId, jobGuid):
+    def progress(self, projectId, jobUid):
         """
         Get job progress
         :param projectId:
-        :param jobGuid:
+        :param jobUid:
         :return:
         """
-        return self.commandJobProgress(projectId, jobGuid)
+        return self.commandJobProgress(projectId, jobUid)
 
-    def close(self, projectId, jobGuid):
+    def close(self, projectId, jobUid):
         """
         Close a completed job (must be done once job is processed)
         :param projectId:
-        :param jobGuid:
+        :param jobUid:
         :return:
         """
-        return self.commandJobClose(projectId, jobGuid)
+        return self.commandJobClose(projectId, jobUid)
 
-    def add_file(self, projectId, jobGuid, fileUri):
+    def add_file(self, projectId, jobUid, fileUri):
         """
         Adds a file to a job
         :param projectId:
-        :param jobGuid:
+        :param jobUid:
         :param fileUri:
         :return:
         """
-        return self.commandJobAddFile(projectId, jobGuid, fileUri)
+        return self.commandJobAddFile(projectId, jobUid, fileUri)
 
     def create_custom_fields(self, account_id, field_name, description):
         """
@@ -174,3 +174,14 @@ class SmartlingJobsApiV3(JobsApiV3):
         :return:
         """
         return self.commandListProjectCustomFields(projectId)
+
+    def check_async_process(self, projectId, jobUid, processUid):
+        """
+        Checks a processes status
+        :param projectId:
+        :param jobUid:
+        :param processUid:
+        :return: 200
+         - response.data.processState [IN_PROGRESS | COMPLETED | FAILED]
+        """
+        return self.commandCheckAsyncProcess(projectId, jobUid, processUid)

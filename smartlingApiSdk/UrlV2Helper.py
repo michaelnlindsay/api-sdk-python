@@ -42,6 +42,7 @@ class UrlV2Helper:
     JOB_ADD_FILE = "/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/file/add"
     ACCOUNT_FIELDS = "/jobs-api/v3/accounts/{accountUid}/custom-fields"
     PROJECT_FIELDS = "/jobs-api/v3/projects/{projectId}/custom-fields"
+    PROCESS_STATUS = "https://api.smartling.com/jobs-api/v3/projects/{projectId}/jobs/{translationJobUid}/processes/{processUid}"
     PROJECT_ADD_FIELDS = "/jobs-api/v3/projects/{projectId}/custom-fields"
     STATUS_ALL = "/files-api/v2/projects/{projectId}/file/status"
     STATUS_LOCALE = "/files-api/v2/projects/{projectId}/locales/{localeId}/file/status"
@@ -57,7 +58,7 @@ class UrlV2Helper:
     def __init__(self, projectId):
         self.projectId = projectId
 
-    def getUrl(self, urlWithPlaceholders, localeId="", accountUid="", projectId="", jobGuid=""):
+    def getUrl(self, urlWithPlaceholders, localeId="", accountUid="", projectId="", jobUid=""):
 
         url = urlWithPlaceholders
         if self.projectId:
@@ -71,8 +72,8 @@ class UrlV2Helper:
         if accountUid :
             url = url.replace("{accountUid}", accountUid)
 
-        if jobGuid :
-            url = url.replace("{translationJobUid}", jobGuid)
+        if jobUid :
+            url = url.replace("{translationJobUid}", jobUid)
 
         if "{localeId}" in url:
             raise "Unhandled localeId placeholder:" + url

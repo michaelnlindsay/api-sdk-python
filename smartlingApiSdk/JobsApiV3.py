@@ -63,54 +63,54 @@ class JobsApiV3(ApiV3):
         print("add job payload: ", kw)
         return self.command(ReqMethod.POST, url, kw)
 
-    def commandJobDetails(self, projectId, jobGuid):
+    def commandJobDetails(self, projectId, jobUid):
         """ https://api-reference.smartling.com/#operation/getJobDetails """
         kw = {}
-        url = self.urlHelper.getUrl(self.urlHelper.JOB_DETAILS, projectId=projectId, jobGuid=jobGuid)
+        url = self.urlHelper.getUrl(self.urlHelper.JOB_DETAILS, projectId=projectId, jobUid=jobUid)
         return self.command(ReqMethod.GET, url, kw)
 
-    def commandJobDelete(self, projectId, jobGuid):
+    def commandJobDelete(self, projectId, jobUid):
         """ https://api-reference.smartling.com/#operation/deleteJob """
         kw = {}
-        url = self.urlHelper.getUrl(self.urlHelper.JOB_DELETE, projectId=projectId, jobGuid=jobGuid)
+        url = self.urlHelper.getUrl(self.urlHelper.JOB_DELETE, projectId=projectId, jobUid=jobUid)
         return self.command(ReqMethod.DELETE, url, kw)
 
-    def commandJobCancel(self, projectId, jobGuid):
+    def commandJobCancel(self, projectId, jobUid):
         """ https://api-reference.smartling.com/#operation/cancelJob """
         kw = {}
-        url = self.urlHelper.getUrl(self.urlHelper.JOB_CANCEL, projectId=projectId, jobGuid=jobGuid)
+        url = self.urlHelper.getUrl(self.urlHelper.JOB_CANCEL, projectId=projectId, jobUid=jobUid)
         return self.command(ReqMethod.POST, url, kw)
 
-    def commandJobAuthorize(self, projectId, jobGuid):
+    def commandJobAuthorize(self, projectId, jobUid):
         """ https://api-reference.smartling.com/#operation/authorizeJob """
         kw = {}
-        url = self.urlHelper.getUrl(self.urlHelper.JOB_AUTHORIZE, projectId=projectId, jobGuid=jobGuid)
+        url = self.urlHelper.getUrl(self.urlHelper.JOB_AUTHORIZE, projectId=projectId, jobUid=jobUid)
         return self.command(ReqMethod.POST, url, kw)
 
-    def commandJobListFiles(self, projectId, jobGuid):
+    def commandJobListFiles(self, projectId, jobUid):
         """ https://api-reference.smartling.com/#operation/getJobFilesList """
         kw = {}
-        url = self.urlHelper.getUrl(self.urlHelper.JOB_LIST_FILES, projectId=projectId, jobGuid=jobGuid)
+        url = self.urlHelper.getUrl(self.urlHelper.JOB_LIST_FILES, projectId=projectId, jobUid=jobUid)
         return self.command(ReqMethod.GET, url, kw)
 
-    def commandJobProgress(self, projectId, jobGuid):
+    def commandJobProgress(self, projectId, jobUid):
         """ https://api-reference.smartling.com/#operation/getJobFileProgress """
         kw = {}
-        url = self.urlHelper.getUrl(self.urlHelper.JOB_PROGRESS, projectId=projectId, jobGuid=jobGuid)
+        url = self.urlHelper.getUrl(self.urlHelper.JOB_PROGRESS, projectId=projectId, jobUid=jobUid)
         return self.command(ReqMethod.GET, url, kw)
 
-    def commandJobClose(self, projectId, jobGuid):
+    def commandJobClose(self, projectId, jobUid):
         """ https://api-reference.smartling.com/#operation/closeJob """
         kw = {}
-        url = self.urlHelper.getUrl(self.urlHelper.JOB_CLOSE, projectId=projectId, jobGuid=jobGuid)
+        url = self.urlHelper.getUrl(self.urlHelper.JOB_CLOSE, projectId=projectId, jobUid=jobUid)
         return self.command(ReqMethod.POST, url, kw)
 
-    def commandJobAddFile(self, projectId, jobGuid, fileUri):
+    def commandJobAddFile(self, projectId, jobUid, fileUri):
         """ https://api-reference.smartling.com/#operation/addFileToJob """
         kw = {}
         kw[Params.FILE_URI] = fileUri
         kw[Params.JOB_TARGET_LOCALES] = self.SUPPORTED_LOCALES
-        url = self.urlHelper.getUrl(self.urlHelper.JOB_ADD_FILE, projectId=projectId, jobGuid=jobGuid)
+        url = self.urlHelper.getUrl(self.urlHelper.JOB_ADD_FILE, projectId=projectId, jobUid=jobUid)
         print("add file request: ", url)
         print("add file payload: ", kw)
         return self.command(ReqMethod.POST, url, kw)
@@ -157,3 +157,7 @@ class JobsApiV3(ApiV3):
         """ https://api-reference.smartling.com/#operation/getProjectCustomFields """
         url = self.urlHelper.getUrl(self.urlHelper.PROJECT_FIELDS, projectId=projectId)
         return self.command(ReqMethod.GET, url, {})
+
+    def commandCheckAsyncProcess(self, projectId, jobUid, processUid):
+        """ https://api-reference.smartling.com/#operation/getJobAsyncProcessStatus """
+        url = self.urlHelper.getUrl(self.urlHelper.PROCESS_STATUS, projectId=projectId, jobUid=jobUid, processUid=processUid)
