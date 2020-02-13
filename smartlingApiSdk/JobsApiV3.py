@@ -59,8 +59,6 @@ class JobsApiV3(ApiV3):
         if custom_fields:
             kw[Params.JOB_CUSTOM_FIELDS] = custom_fields
         url = self.urlHelper.getUrl(self.urlHelper.JOB_CREATE, projectId=projectId)
-        print("add job request: ", url)
-        print("add job payload: ", kw)
         return self.command(ReqMethod.POST, url, kw)
 
     def commandJobDetails(self, projectId, jobUid):
@@ -111,8 +109,6 @@ class JobsApiV3(ApiV3):
         kw[Params.FILE_URI] = fileUri
         kw[Params.JOB_TARGET_LOCALES] = self.SUPPORTED_LOCALES
         url = self.urlHelper.getUrl(self.urlHelper.JOB_ADD_FILE, projectId=projectId, jobUid=jobUid)
-        print("add file request: ", url)
-        print("add file payload: ", kw)
         return self.command(ReqMethod.POST, url, kw)
 
     def commandCreateCustomFields(self, accountUid, field_name, description):
