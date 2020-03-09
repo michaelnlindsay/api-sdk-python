@@ -47,11 +47,11 @@ class SmartlingFileApiV2(FileApiV2):
     def __init__(self, userIdentifier, userSecret, projectId, proxySettings=None):
         FileApiV2.__init__(self, userIdentifier, userSecret, projectId, proxySettings)
 
-    def upload(self, filePath, fileType, fileUri=None, **kw):
+    def upload(self, filePath, fileType, fileUri=None, namespace=None, **kw):
         """ Uploads original source content to Smartling
             returns (response, status_code) tuple
             for details on `upload` command see http://docs.smartling.com/pages/API/v2/FileAPI/Upload-File/ """
-        return self.commandUpload(filePath, fileType, fileUri=fileUri, **kw)
+        return self.commandUpload(filePath, fileType, fileUri=fileUri, namespace=namespace, **kw)
 
     def get(self, fileUri, locale, **kw):
         """ implements `get` api command

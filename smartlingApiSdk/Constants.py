@@ -22,13 +22,14 @@
 class Params:
     allowedRetrievalTypes = ('pending', 'published', 'pseudo', 'contextMatchingInstrumented')
 
-    API_KEY    = 'apiKey'
-    PROJECT_ID = 'projectId'
-    FILE_PATH  = 'file_path'
-    FILE_URI   = 'fileUri'
-    FILE_TYPE  = 'fileType'
-    LOCALE     = 'locale'
-    FILE       = 'file'
+    API_KEY         = 'apiKey'
+    PROJECT_ID      = 'projectId'
+    FILE_PATH       = 'file_path'
+    FILE_URI        = 'fileUri'
+    FILE_TYPE       = 'fileType'
+    FILE_NAMESPACE  = 'smartling.namespace'
+    LOCALE          = 'locale'
+    FILE            = 'file'
 
     JOB_NAME   = 'jobName'
     JOB_DESCRIPTION = 'description'
